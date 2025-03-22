@@ -1,53 +1,31 @@
 // ========================================
-// 🌙 themeToggle.js (v3.0)
+// 🌙 themeToggle.js (v2.0)
 // ========================================
-// Enhanced Dark/Light Mode Switching Module
-// - Persistent user preference (localStorage)
-// - Improved accessibility & performance
+// Smooth Dark/Light Mode Switching
+// Persistent user preference using localStorage
 // ========================================
 
-export class ThemeToggle {  // Export the class, not an instance
-    constructor() {
-        this.toggleSwitch = document.getElementById('themeModeToggle');
-        this.themeLabel = document.getElementById('themeLabel');
-        this.initialize();
-    }
+export function initThemeToggle() {
+    const toggleSwitch = document.getElementById('themeModeToggle');
+    const themeLabel = document.getElementById('themeLabel');
 
-    initialize() {
-        this.loadTheme();
-        this.setupEventListeners();
-    }
+    // Load saved theme from localStorage
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    updateToggleUI(currentTheme);
 
-    loadTheme() {
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        this.updateToggleUI(currentTheme);
-    }
+    // Event Listener for toggle change
+    toggleSwitch.addEventListener('change', (e) => {
+        const newTheme = e.target.checked ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateToggleUI(newTheme);
+    });
 
-    setupEventListeners() {
-        if (!this.toggleSwitch) {
-            console.error('Theme toggle switch not found.');
-            return;
-        }
-
-        this.toggleSwitch.addEventListener('change', (e) => {
-            const newTheme = e.target.checked ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            this.updateToggleUI(newTheme);
-        });
-    }
-
-    updateToggleUI(theme) {
+    // Update UI to reflect current theme
+    function updateToggleUI(theme) {
         const isDark = theme === 'dark';
-        if (this.toggleSwitch) {
-            this.toggleSwitch.checked = isDark;
-        }
-        if (this.themeLabel) {
-            this.themeLabel.textContent = isDark ? 'Dark Mode' : 'Light Mode';
-        }
-
-        // Optional: Smooth transition (add to CSS as well)
-        document.documentElement.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        toggleSwitch.checked = isDark;
+        themeLabel.textContent = isDark ? 'Dark Mode' : 'Light Mode';
     }
 }

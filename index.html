@@ -1,62 +1,56 @@
+<!-- File: index.html -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1e1e1e" />
-    <title>Aver AI – Your AI Companion</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1e1e1e" />
+  <title>Aver AI – Welcome</title>
 
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/assets/aw_touch_icon_180x180.png" sizes="180x180" />
-    <link rel="manifest" href="/manifest.json" />
+  <!-- Favicon & Icons -->
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/assets/aw_touch_icon_180x180.png" sizes="180x180" />
+  <link rel="manifest" href="/manifest.json" />
 
-    <link rel="preload" href="/css/style.css" as="style">
-    <link rel="preload" href="/assets/aw_logo_transparent_64x64.png" as="image">
-
-    <link rel="stylesheet" href="/css/style.css" />
-
-    <meta name="description"
-        content="Aver AI: Your intelligent AI assistant. Experience the future of communication.">
-    <meta name="keywords" content="AI, chatbot, artificial intelligence, conversation, Aver AI">
-    <meta name="author" content="Aver Web">
-    <meta property="og:title" content="Aver AI – Your AI Companion">
-    <meta property="og:description"
-        content="Aver AI: Your intelligent AI assistant. Experience the future of communication.">
-    <meta property="og:image" content="/assets/aw_logo_transparent_64x64.png">
-    <meta property="og:url" content="https://www.yourdomain.com/">
-    <meta property="og:type" content="website">
-
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
-
 <body>
 
-    <header id="headerMountPoint" role="banner"></header>
+  <!-- Dynamic Floating Header Mount Point -->
+  <div id="headerMountPoint"></div>
 
-    <main class="landing-content center-text" role="main">
-        <section class="welcome-box">
-            <h1>👋 Welcome to Aver AI</h1>
-            <p>
-                We're currently crafting an incredible experience. Our AI-powered chat is already up
-                and running—feel free to explore!
-            </p>
-            <a class="sidebar-btn mt-4" href="/chat/chat.html" role="button">🚀 Launch AI Chat</a>
-        </section>
+  <!-- Main Landing Content -->
+  <main class="landing-content center-text">
+    <section class="welcome-box">
+      <h1>👋 Welcome to Aver AI</h1>
+      <p>
+        We're currently crafting an incredible experience. Our AI-powered chat is already up and running—feel free to explore!
+      </p>
+      <a class="sidebar-btn mt-4" href="/chat/chat.html">🚀 Launch AI Chat</a>
+    </section>
 
-        <section class="future-slider">
-            <p class="coming-soon">🎉 Exciting features coming soon!</p>
-        </section>
-    </main>
+    <!-- Placeholder for Future Slider/Sidebar Content -->
+    <section class="future-slider">
+      <!-- Future content controlled via admin panel & database -->
+      <p class="coming-soon">🎉 Exciting features coming soon!</p>
+    </section>
+  </main>
 
-    <footer id="footerMountPoint" role="contentinfo"></footer>
+  <!-- Dynamic Footer Mount Point -->
+  <div id="footerMountPoint"></div>
 
-    <script type="module">
-        import { HeaderFooterInjector } from '/js/injectHeaderFooter.js';
+  <!-- JavaScript Modules -->
+  <script type="module">
+    import { injectHeaderFooter } from '/js/injectHeaderFooter.js';
+    import { initThemeToggle } from '/js/themeToggle.js';
 
-        // Inject Header/Footer dynamically and set button states
-        new HeaderFooterInjector(); // Instantiate the class
-    </script>
+    // Inject Header/Footer dynamically and set button states
+    injectHeaderFooter('home');
+
+    // Initialize persistent theme toggle
+    initThemeToggle();
+  </script>
 
 </body>
-
 </html>

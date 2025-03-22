@@ -1,44 +1,40 @@
+<!-- File: /components/header.html -->
 <header id="globalHeader" class="main-header floating-header animated fadeInDown">
   <nav class="navbar">
 
+    <!-- Left Navigation Buttons -->
     <ul class="nav-left">
       <li>
         <button class="nav-btn dynamic-btn" id="aiChatBtn" data-swap="home">🧠 AI Chat</button>
       </li>
       <li>
-        <button class="nav-btn soon-btn" disabled>✨ Soon</button>
+        <button class="nav-btn soon-btn">✨ Soon</button>
       </li>
       <li>
-        <button class="nav-btn soon-btn" disabled>✨ Soon</button>
+        <button class="nav-btn soon-btn">✨ Soon</button>
       </li>
     </ul>
 
+    <!-- Animated Logo (Center) -->
     <div class="logo-center">
-      <a href="/index.html" aria-label="Go to homepage">
+      <a href="/index.html">
         <img src="/assets/aw_logo_transparent_64x64.png" alt="Aver Web Logo" class="logo-img animated pulse" />
       </a>
     </div>
 
+    <!-- Right Navigation Buttons -->
     <ul class="nav-right">
       <li>
-        <button class="nav-btn dynamic-btn" id="loginBtn" data-swap="profile">
-          🔐 Login
-        </button>
+        <button class="nav-btn dynamic-btn" id="loginBtn" data-swap="profile">🔐 Login</button>
       </li>
       <li>
-        <button class="nav-btn dynamic-btn" id="registerBtn" data-swap="logout">
-          📝 Register
-        </button>
+        <button class="nav-btn dynamic-btn" id="registerBtn" data-swap="logout">📝 Register</button>
       </li>
       <li>
-        <button class="nav-btn auth-only" id="authProfileBtn" style="display: none;">
-          👤 Profile
-        </button>
+        <button class="nav-btn auth-only" id="authProfileBtn">👤 Profile</button>
       </li>
       <li>
-        <button class="nav-btn auth-only" id="authActionBtn" style="display: none;">
-          🚪 Logout
-        </button>
+        <button class="nav-btn auth-only" id="authActionBtn">🚪 Logout</button>
       </li>
     </ul>
 

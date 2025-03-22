@@ -1,8 +1,10 @@
+<!-- File: /components/footer.html -->
 <footer id="globalFooter" class="footer animated fadeInUp">
   <div class="footer-content center-text">
     <p>© 2025 Aver Web – All rights reserved.</p>
 
-    <div class="theme-toggle" aria-label="Theme Mode Switch">
+    <!-- Theme Toggle (Dark/Light) -->
+    <div class="theme-toggle">
       <label class="theme-switch">
         <input type="checkbox" id="themeModeToggle" />
         <span class="slider"></span>
@@ -10,7 +12,8 @@
       <span id="themeLabel">Dark Mode</span>
     </div>
 
-    <div id="modelStatusContainer" class="model-status" style="display:none;" aria-live="polite" aria-atomic="true">
+    <!-- AI Model Status (Visible only on Chat Page) -->
+    <div id="modelStatusContainer" class="model-status" style="display:none;">
       <span id="modelStatusText">🔄 Checking AI model...</span>
     </div>
   </div>

@@ -1,98 +1,90 @@
+<!-- File: chat.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1e1e1e" />
-    <title>Aver AI – Chat</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1e1e1e" />
+  <title>Aver AI – Chat</title>
 
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/assets/aw_touch_icon_180x180.png" sizes="180x180" />
-    <link rel="manifest" href="/manifest.json" />
+  <!-- Favicon & Icons -->
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/assets/aw_touch_icon_180x180.png" sizes="180x180" />
+  <link rel="manifest" href="/manifest.json" />
 
-    <link rel="stylesheet" href="/css/style.css" />
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
 
-    <div id="headerMountPoint"></div>
+  <!-- Dynamic Floating Header Mount Point -->
+  <div id="headerMountPoint"></div>
 
-    <main class="chat-page">
+  <!-- Main Chat Layout -->
+  <main class="chat-page">
 
-        <aside class="sidebar" aria-label="Chat History">
-            <div class="sidebar-header">
-                <h2>Chat History</h2>
-                <button id="newChatBtn" class="sidebar-btn">
-                    <span aria-hidden="true">🆕</span> New Chat
-                </button>
-            </div>
-            <input type="text" id="chatSearch" class="sidebar-search" placeholder="🔍 Search chats..."
-                aria-label="Search chat history" />
-            <div id="chatHistory" class="chat-history" role="list">
-                </div>
-        </aside>
+    <!-- Left Sidebar (Saved Chats) -->
+    <aside class="sidebar">
+      <input type="text" id="chatSearch" class="sidebar-search" placeholder="🔍 Search chats..." />
+      <button id="newChatBtn" class="sidebar-btn">🆕 New Chat</button>
+      <div id="chatHistory" class="chat-history">
+        <!-- Dynamically loaded chat history -->
+      </div>
+    </aside>
 
-        <section class="chat-section" aria-label="Chat Messages">
-            <div class="chat-header">
-                <h2 id="chatSessionTitle" class="animated fadeIn">✨ AI Chat Session</h2>
-            </div>
-            <div id="chatBox" class="chat-box" role="log" aria-live="polite">
-                </div>
+    <!-- Center Chat Section -->
+    <section class="chat-section">
+      <div class="chat-header">
+        <h2 id="chatSessionTitle" class="animated fadeIn">✨ AI Chat Session</h2>
+      </div>
+      <div id="chatBox" class="chat-box">
+        <!-- AI and User messages dynamically injected here -->
+      </div>
 
-            <div class="chat-input-area">
-                <textarea id="chatInput" class="chat-input" placeholder="Type a message..."
-                    aria-label="Chat input" aria-describedby="chat-submit-button"></textarea>
-                <button id="chat-submit-button" aria-label="Send message">
-                    <span aria-hidden="true">Send</span>
-                </button>
-            </div>
-        </section>
+      <!-- Hidden form integrated with modular chatbox-modal -->
+      <form id="chatForm" class="hidden-form" style="display:none;">
+        <input type="hidden" id="chatInput" />
+      </form>
+    </section>
 
-        <aside class="memory-sidebar" aria-label="Memory Cards">
-            <div class="sidebar-header">
-                <h2>Memories</h2>
-                <div class="memory-tools">
-                    <input type="text" id="memorySearch" placeholder="🔍 Search memories..."
-                        aria-label="Search memories" />
-                    <button id="clearAllMemoriesBtn" title="Clear All Memories" aria-label="Clear all memories">
-                        <span aria-hidden="true">🧹</span>
-                    </button>
-                </div>
-            </div>
-            <div id="memoryList" class="memory-list">
-                </div>
-        </aside>
+    <!-- Right Sidebar (Memory Cards) -->
+    <aside class="memory-sidebar">
+      <div class="memory-tools">
+        <input type="text" id="memorySearch" placeholder="🔍 Search memories..." />
+        <button id="clearAllMemoriesBtn" title="Clear All Memories">🧹</button>
+      </div>
+      <div id="memoryList" class="memory-list">
+        <!-- Dynamically loaded memory cards -->
+      </div>
+    </aside>
 
-    </main>
+  </main>
 
-    <div id="footerMountPoint"></div>
+  <!-- Dynamic Footer Mount Point -->
+  <div id="footerMountPoint"></div>
 
-    <script type="module">
-    import { HeaderFooterInjector } from '/js/injectHeaderFooter.js';
-    import { ThemeToggle } from '/js/themeToggle.js';
+  <!-- JavaScript Modules -->
+  <script type="module">
+    import { injectHeaderFooter } from '/js/injectHeaderFooter.js';
+    import { initThemeToggle } from '/js/themeToggle.js';
     import { initChatboxModal } from '/js/chatbox-modal.js';
-    import { Chat } from '/js/chat.js';
+    import '/js/chat.js';
     import '/js/logger.js';
 
     // Inject header/footer and dynamically adjust header buttons (AI Chat→Home)
-    //injectHeaderFooter('chat'); // Removed or Commented out
-    new HeaderFooterInjector();  // Corrected Instantiation
+    injectHeaderFooter('chat');
 
     // Initialize persistent theme toggle (Dark/Light Mode)
-    new ThemeToggle();
+    initThemeToggle();
 
     // Initialize modular Chatbox modal input
-    //initChatboxModal(async (message) => {
-    //    document.getElementById("chatInput").value = message;
-    //    document.getElementById("chatForm").dispatchEvent(new Event("submit"));
-    //});
-
-    // Initialize Chat Class
-    const chat = new Chat();
-    chat.init();
-</script>
+    initChatboxModal(async (message) => {
+      document.getElementById("chatInput").value = message;
+      document.getElementById("chatForm").dispatchEvent(new Event("submit"));
+    });
+  </script>
 
 </body>
-
 </html>
