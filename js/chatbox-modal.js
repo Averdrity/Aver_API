@@ -1,71 +1,65 @@
-// ========================================
-// 💬 chatbox-modal.js (v2.0)
-// ========================================
-// Modular, dynamic chat input modal.
-// Supports multiline input and animations.
-// ========================================
+// ================================================
+// 🚀 chatbox-modal.js | Final Version (Fully Enhanced)
+// ================================================
+// Fully modular chatbox modal component
+// Dynamic, animated, responsive, with character counter
+// ================================================
 
 export function initChatboxModal(onSendCallback) {
     createChatboxModal();
     setupEventHandlers(onSendCallback);
 }
 
-// Create Chatbox Modal HTML dynamically
+// Dynamically create and append the chatbox modal
 function createChatboxModal() {
-    const chatboxContainer = document.createElement('div');
-    chatboxContainer.id = 'chatboxContainer';
-    chatboxContainer.innerHTML = `
-    <div class="chatbox-modal animated fadeInUp">
+    const chatboxHTML = `
+    <div id="chatboxModal" class="chatbox-modal animated fadeInUp">
     <textarea id="chatboxInput" placeholder="Type your message..." rows="1"></textarea>
-    <button id="chatboxSendBtn">➤</button>
+    <div class="chatbox-controls">
     <span id="charCounter">0 / 1000</span>
+    <button id="chatboxSendBtn">Send ➤</button>
+    </div>
     </div>
     `;
-    document.body.appendChild(chatboxContainer);
+
+    const container = document.createElement('div');
+    container.id = 'chatboxContainer';
+    container.innerHTML = chatboxHTML;
+
+    document.querySelector('#chat-main').appendChild(container);
 }
 
-// Event Handlers for Chatbox
+// Event listeners and user interactions
 function setupEventHandlers(onSendCallback) {
     const textarea = document.getElementById('chatboxInput');
     const sendBtn = document.getElementById('chatboxSendBtn');
     const charCounter = document.getElementById('charCounter');
 
-    textarea.focus();
+    // Send message on click
+    sendBtn.onclick = () => sendMessage(textarea, onSendCallback);
 
-    // Dynamic textarea height adjustment
-    textarea.addEventListener('input', () => {
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
-        charCounter.textContent = `${textarea.value.length} / 1000`;
-    });
-
-    // Handle Enter (send) and Shift+Enter (newline)
+    // Handle Enter (send) & Shift+Enter (newline)
     textarea.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            attemptSend();
+            sendMessage(textarea, onSendCallback);
         }
     });
 
-    // Send button click
-    sendBtn.addEventListener('click', () => {
-        attemptSend();
-    });
+    // Update counter dynamically
+    textarea.addEventListener('input', updateCharCounter);
 
-    // Send message function with validation
-    function attemptSend() {
-        const message = textarea.value.trim();
-        if (message && message.length <= 1000) {
-            onSendCallback(message);
-            resetChatbox();
-        }
+    function updateCharCounter() {
+        charCounter.textContent = `${textarea.value.length} / 1000`;
     }
+}
 
-    // Reset Chatbox after sending
-    function resetChatbox() {
-        textarea.value = '';
-        textarea.style.height = 'auto';
-        charCounter.textContent = `0 / 1000`;
-        textarea.focus();
-    }
+// Message sending logic
+function sendMessage(textarea, onSendCallback) {
+    const message = textarea.value.trim();
+    if (!message) return;
+
+    onSendCallback(message);
+    textarea.value = '';
+    document.getElementById('charCounter').textContent = '0 / 1000';
 }

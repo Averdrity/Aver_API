@@ -342,10 +342,24 @@ padding: 15px;
     margin-bottom: 10px;
 }
 
-/* Chat Message Bubbles */
-.message-bubble {
-    padding: 10px 15px;
+/* Chat Sidebar Styles */
+.chat-item {
+    padding: 10px;
+    margin-bottom: 5px;
     background: var(--input-bg);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.chat-item:hover {
+    background: var(--scrollbar-thumb);
+}
+
+/* Message Bubble */
+.message-bubble {
+    padding: 12px;
+    margin-bottom: 8px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     max-width: 75%;
@@ -353,13 +367,13 @@ padding: 15px;
 
 .message-user {
     align-self: flex-end;
-    background: #4a90e2;
-    color: #fff;
+    background-color: #4a90e2;
+    color: white;
 }
 
 .message-ai {
     align-self: flex-start;
-    background: var(--card-bg);
+    background-color: var(--card-bg);
     color: var(--text-color);
 }
 

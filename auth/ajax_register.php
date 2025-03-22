@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert new user
-        $stmt = $pdo->prepare("INSERT INTO users (username, password, created_at) VALUES (?, ?, NOW())");
+        $stmt = $pdo->prepare("INSERT INTO users (username, password, registered_at) VALUES (?, ?, NOW())");
         $stmt->execute([$username, $hashedPassword]);
 
         // Start session upon successful registration
