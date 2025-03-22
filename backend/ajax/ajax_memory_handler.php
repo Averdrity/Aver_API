@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 header('Content-Type: application/json');
-require_once '../../config/db.php';
+require_once '../../includes/db.php';
 session_start();
 
 $user_id = $_SESSION['user_id'] ?? null;
