@@ -1,121 +1,451 @@
-/* ===========================================
- * 🖌️ Aver-Web Ultimate CSS (v4.0)
- * ===========================================
- * Part 1 of 5: Global Reset & Base Typography
- * Fully Responsive, Modern Dark/Light Themes
- * =========================================== */
+/* ========================================
+ *   🚀 Aver-Web Final Style.css (Part 1/3)
+ *   ======================================== */
 
-/* ===== GLOBAL RESET ===== */
-* {
+/* CSS RESET & GLOBAL */
+*, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    outline: none;
-    user-select: none;
 }
 
-/* Smooth scrolling for modern browsers */
-html {
-    scroll-behavior: smooth;
-}
-
-/* ===== ROOT VARIABLES & THEMES ===== */
-:root {
-    --bg-color: #0a0a0a;
-    --text-color: #f0f0f0;
-    --accent: #3b82f6;
-    --accent-hover: #2563eb;
-    --card-bg: #181818;
-    --border-color: #333;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    --radius: 12px;
-    --transition: all 0.3s ease;
-    --success: #16a34a;
-    --danger: #dc2626;
-}
-
-[data-theme="light"] {
-    --bg-color: #f4f4f4;
-    --text-color: #1e1e1e;
-    --accent: #3b82f6;
-    --accent-hover: #2563eb;
-    --card-bg: #ffffff;
-    --border-color: #ccc;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Theme color for mobile browsers */
-meta[name="theme-color"] {
-    content: var(--bg-color);
-}
-
-/* ===== GLOBAL BODY & CONTAINER STYLES ===== */
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Segoe UI', 'Roboto', sans-serif;
+body, html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    overflow-x: hidden;
-    transition: var(--transition);
-}
-
-/* Center text class utility */
-.center-text {
-    text-align: center;
-}
-
-/* Utility margin-top class */
-.mt-4 {
-    margin-top: 1rem;
-}
-
-/* ===== TYPOGRAPHY ===== */
-h1, h2, h3, h4 {
-    font-weight: 700;
-    color: var(--text-color);
-    letter-spacing: 0.5px;
-}
-
-h1 { font-size: 2rem; margin-bottom: 1rem; }
-h2 { font-size: 1.6rem; margin-bottom: 0.75rem; }
-h3 { font-size: 1.4rem; margin-bottom: 0.5rem; }
-h4 { font-size: 1.2rem; margin-bottom: 0.4rem; }
-
-p {
-    font-size: 1rem;
+    scroll-behavior: smooth;
+    background: var(--body-bg);
     color: var(--text-color);
 }
 
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 5px;
+}
+
+/* Global Link Style */
 a {
-    color: var(--accent);
     text-decoration: none;
-    transition: var(--transition);
+    color: inherit;
 }
 
-a:hover {
-    text-decoration: underline;
-    color: var(--accent-hover);
+/* BUTTONS */
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
 }
 
-/* Buttons & Form Inputs Styling */
-button, input[type="text"], input[type="password"], textarea {
-    font-family: inherit;
+/* INPUTS */
+input, textarea {
+    padding: 8px;
+    border-radius: var(--radius);
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+/* GLOBAL VARIABLES (Dark Theme Default) */
+:root[data-theme="dark"] {
+    --body-bg: #181818;
+    --text-color: #f0f0f0;
+    --text-muted: #aaa;
+    --card-bg: #232323;
+    --shadow: 0 4px 10px rgba(0,0,0,0.4);
+    --radius: 12px;
+    --scrollbar-track: #1c1c1c;
+    --scrollbar-thumb: #333;
+    --input-border: #444;
+    --input-bg: #2a2a2a;
+}
+
+/* LIGHT THEME VARIABLES */
+:root[data-theme="light"] {
+    --body-bg: #f4f4f4;
+    --text-color: #222;
+    --text-muted: #666;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 10px rgba(0,0,0,0.1);
+    --radius: 12px;
+    --scrollbar-track: #ddd;
+    --scrollbar-thumb: #bbb;
+    --input-border: #ccc;
+    --input-bg: #fafafa;
+}
+
+/* =========================================
+ *   🚀 Aver-Web Final Style.css (Part 2/3)
+ *   ========================================= */
+
+/* ======== HEADER ======== */
+.floating-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    z-index: 1000;
+}
+
+.header-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-btn {
+    padding: 8px 14px;
+    background: transparent;
+    color: var(--text-color);
+    border-radius: var(--radius);
+    transition: background 0.3s ease;
+}
+
+.header-btn:hover {
+    background: var(--input-bg);
+}
+
+.header-btn.soon {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.header-logo img {
+    height: 48px;
+    animation: logo-spin 5s linear infinite;
+}
+
+@keyframes logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ======== FOOTER ======== */
+.site-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-muted);
+    z-index: 900;
+}
+
+.footer-content {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ======== THEME TOGGLE ======== */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.theme-toggle input[type="checkbox"] {
+    appearance: none;
+    width: 40px;
+    height: 20px;
+    background: var(--input-bg);
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.theme-toggle input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 2px;
+    left: 2px;
+    background: var(--text-color);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle input[type="checkbox"]:checked::before {
+    transform: translateX(20px);
+}
+
+/* ======== MODALS ======== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: modalIn 0.3s ease;
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.modal-content input, .modal-content textarea {
+    padding: 10px;
+    border-radius: var(--radius);
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+.modal-content button {
+    padding: 10px;
+    border-radius: var(--radius);
+    background: var(--input-bg);
+    color: var(--text-color);
+    transition: background 0.3s ease;
+}
+
+.modal-content button:hover {
+    background: var(--scrollbar-thumb);
+}
+
+.modal-error {
+    color: #ff5c5c;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* =========================================
+ *   🚀 Aver-Web Final Style.css (Part 3/3)
+ *   ========================================= */
+
+/* ======== LANDING PAGE ======== */
+.hero {
+    margin-top: 100px;
+    text-align: center;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.welcome-box {
+    background: var(--card-bg);
+    padding: 35px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    max-width: 650px;
+    width: 100%;
+}
+
+.welcome-box h1 {
+    color: var(--text-color);
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+}
+
+.welcome-box p {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+}
+
+/* Info Slider Placeholder */
+.info-sliders {
+    margin: 40px auto 80px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.slider.placeholder {
+    width: 280px;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    color: var(--text-muted);
+    text-align: center;
     font-size: 1rem;
 }
 
-/* Animations */
+/* ======== CHAT UI ======== */
+#chat-container {
+display: flex;
+margin-top: 80px;
+height: calc(100vh - 140px);
+padding-bottom: 60px;
+}
+
+#chat-history, #memory-sidebar {
+width: 280px;
+background: var(--card-bg);
+box-shadow: var(--shadow);
+padding: 15px;
+overflow-y: auto;
+}
+
+#chat-main {
+flex: 1;
+display: flex;
+flex-direction: column;
+padding: 15px;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+/* Chat Message Bubbles */
+.message-bubble {
+    padding: 10px 15px;
+    background: var(--input-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    max-width: 75%;
+}
+
+.message-user {
+    align-self: flex-end;
+    background: #4a90e2;
+    color: #fff;
+}
+
+.message-ai {
+    align-self: flex-start;
+    background: var(--card-bg);
+    color: var(--text-color);
+}
+
+/* Chatbox Input */
+#chatboxContainer textarea {
+width: 100%;
+min-height: 60px;
+padding: 10px;
+resize: none;
+border-radius: var(--radius);
+background: var(--input-bg);
+color: var(--text-color);
+border: none;
+box-shadow: var(--shadow);
+}
+
+#chatboxContainer button {
+margin-top: 8px;
+padding: 10px 15px;
+background: var(--card-bg);
+color: var(--text-color);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+transition: background 0.3s;
+}
+
+#chatboxContainer button:hover {
+background: var(--scrollbar-thumb);
+}
+
+/* ======== MEMORY SIDEBAR ======== */
+.memory-card {
+    background: var(--input-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.memory-card:hover {
+    transform: translateY(-4px);
+}
+
+.memory-card .memory-title {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.memory-card .memory-tag {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.memory-card .memory-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+}
+
+.memory-card .memory-delete {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #ff5555;
+    cursor: pointer;
+}
+
+/* ======== ANIMATIONS ======== */
 .animated {
-    animation-duration: 0.8s;
+    animation-duration: 1s;
     animation-fill-mode: both;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.fadeInDown {
+    animation-name: fadeInDown;
 }
 
-.fadeIn {
-    animation-name: fadeIn;
+.fadeInUp {
+    animation-name: fadeInUp;
 }
 
 @keyframes fadeInDown {
@@ -123,706 +453,31 @@ button, input[type="text"], input[type="password"], textarea {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.fadeInDown {
-    animation-name: fadeInDown;
-}
-
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-.fadeInUp {
-    animation-name: fadeInUp;
-}
+/* Responsive Layout Adjustments */
+@media (max-width: 900px) {
+    #chat-history, #memory-sidebar {
+    display: none;
+    }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.07); }
-}
+    #chat-main {
+    width: 100%;
+    }
 
-.pulse {
-    animation: pulse 3s infinite ease-in-out;
-}
-
-/* Scrollbar customization */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--bg-color);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    border-radius: var(--radius);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-hover);
-}
-
-/* ===========================================
- * 🖌️ Aver-Web Ultimate CSS (v4.0)
- * ===========================================
- * Part 2 of 5: Header & Footer Styling
- * =========================================== */
-
-/* ===== FLOATING HEADER ===== */
-.floating-header {
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    background: linear-gradient(to right, #101010, #181818);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: var(--shadow);
-    padding: 12px 20px;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-left,
-.nav-right {
-    display: flex;
-    gap: 10px;
-    list-style: none;
-}
-
-.nav-btn {
-    padding: 8px 14px;
-    background-color: #262626;
-    border-radius: var(--radius);
-    color: #eaeaea;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: var(--transition);
-    box-shadow: var(--shadow);
-}
-
-.nav-btn:hover {
-    background-color: var(--accent);
-    color: #fff;
-    transform: translateY(-2px);
-}
-
-.nav-btn.soon-btn {
-    background-color: #444;
-    cursor: default;
-    opacity: 0.6;
-}
-
-.logo-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.logo-img {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-}
-
-/* ===== FOOTER ===== */
-.footer {
-    background-color: var(--card-bg);
-    border-top: 1px solid var(--border-color);
-    padding: 18px 20px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    font-size: 0.9rem;
-    margin-top: 30px;
-}
-
-.footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-}
-
-/* ===== THEME TOGGLE SWITCH ===== */
-.theme-toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.theme-switch {
-    position: relative;
-    width: 42px;
-    height: 22px;
-}
-
-.theme-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #666;
-    transition: 0.4s;
-    border-radius: 22px;
-}
-
-.slider::before {
-    content: "";
-    position: absolute;
-    height: 18px;
-    width: 18px;
-    left: 2px;
-    bottom: 2px;
-    background-color: #fff;
-    transition: 0.4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: var(--accent);
-}
-
-input:checked + .slider::before {
-    transform: translateX(20px);
-}
-
-#themeLabel {
-font-size: 0.9rem;
-color: var(--text-color);
-}
-
-/* ===== AI MODEL STATUS ===== */
-.model-status {
-    background-color: #222;
-    padding: 8px 14px;
-    border-radius: var(--radius);
-    font-size: 0.85rem;
-    box-shadow: var(--shadow);
-    margin-top: 5px;
-}
-
-#modelStatusText {
-color: #ccc;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .navbar {
+    .floating-header, .site-footer {
         flex-direction: column;
-        gap: 10px;
-    }
-
-    .nav-left,
-    .nav-right {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .logo-img {
-        width: 52px;
-        height: 52px;
-    }
-
-    .footer-content {
         gap: 8px;
     }
-}
 
-/* ===========================================
- * 🖌️ Aver-Web Ultimate CSS (v4.0)
- * ===========================================
- * Part 3 of 5: Landing Page & Main Content
- * =========================================== */
-
-/* ===== MAIN CONTENT AREA ===== */
-.landing-content {
-    padding: 80px 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-/* ===== WELCOME BOX ===== */
-.welcome-box {
-    background: var(--card-bg);
-    padding: 40px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    animation: fadeInUp 0.8s ease-out;
-    transition: var(--transition);
-}
-
-.welcome-box h1 {
-    margin-bottom: 20px;
-    font-size: 2rem;
-}
-
-.welcome-box p {
-    font-size: 1rem;
-    line-height: 1.7;
-    opacity: 0.9;
-}
-
-/* Call-to-action button */
-.sidebar-btn {
-    display: inline-block;
-    background-color: var(--accent);
-    color: #fff;
-    padding: 12px 18px;
-    border-radius: var(--radius);
-    font-weight: 600;
-    margin-top: 25px;
-    transition: var(--transition);
-    box-shadow: var(--shadow);
-}
-
-.sidebar-btn:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-3px);
-}
-
-/* ===== FUTURE CONTENT SLIDER PLACEHOLDER ===== */
-.future-slider {
-    background-color: #141414;
-    border: 2px dashed var(--border-color);
-    padding: 30px;
-    border-radius: var(--radius);
-    margin-top: 40px;
-    text-align: center;
-    color: var(--text-color);
-    opacity: 0.7;
-    transition: var(--transition);
-}
-
-.future-slider:hover {
-    opacity: 1;
-    border-color: var(--accent);
-    box-shadow: var(--shadow);
-}
-
-.coming-soon {
-    font-style: italic;
-    font-size: 1rem;
-}
-
-/* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 768px) {
-    .landing-content {
-        padding: 60px 15px;
+    .header-btn-group, .footer-content {
+        justify-content: center;
     }
 
-    .welcome-box {
-        padding: 30px 20px;
-    }
-
-    .welcome-box h1 {
-        font-size: 1.8rem;
-    }
-
-    .sidebar-btn {
-        padding: 10px 15px;
-    }
-
-    .future-slider {
-        padding: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .landing-content {
-        padding: 40px 10px;
-    }
-
-    .welcome-box {
-        padding: 20px 15px;
-    }
-
-    .welcome-box h1 {
-        font-size: 1.6rem;
-    }
-
-    .welcome-box p {
-        font-size: 0.95rem;
-    }
-}
-
-/* ===========================================
- * 🖌️ Aver-Web Ultimate CSS (v4.0)
- * ===========================================
- * Part 4 of 5: Chat Page, Chat & Memory Sidebars
- * =========================================== */
-
-/* ===== CHAT PAGE GRID LAYOUT ===== */
-.chat-page {
-    display: grid;
-    grid-template-columns: 280px 1fr 300px;
-    height: calc(100vh - 120px);
-    background-color: var(--bg-color);
-    overflow: hidden;
-}
-
-/* ===== LEFT SIDEBAR (SAVED CHATS) ===== */
-.sidebar {
-    background-color: var(--card-bg);
-    border-right: 1px solid var(--border-color);
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    overflow-y: auto;
-    box-shadow: inset -2px 0 6px rgba(0, 0, 0, 0.3);
-}
-
-/* Sidebar search input */
-.sidebar-search {
-    padding: 8px 12px;
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    border-radius: var(--radius);
-    width: 100%;
-}
-
-/* New Chat Button */
-.sidebar-btn {
-    background-color: var(--accent);
-    color: #fff;
-    padding: 10px 14px;
-    font-weight: bold;
-    border-radius: var(--radius);
-    border: none;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.sidebar-btn:hover {
-    background-color: var(--accent-hover);
-    transform: scale(1.02);
-}
-
-/* Chat History Items */
-.chat-history {
-    flex-grow: 1;
-    overflow-y: auto;
-}
-
-.chat-item {
-    background-color: #222;
-    border-radius: var(--radius);
-    padding: 10px 14px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: var(--transition);
-    position: relative;
-}
-
-.chat-item:hover {
-    background-color: var(--accent);
-    color: #fff;
-}
-
-/* Dropdown Menu (3 dots) */
-.chat-options {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    color: #bbb;
-    border: none;
-    cursor: pointer;
-}
-
-.chat-dropdown {
-    position: absolute;
-    top: 35px;
-    right: 10px;
-    background-color: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    flex-direction: column;
-    display: none;
-    z-index: 100;
-}
-
-.chat-dropdown.visible {
-    display: flex;
-}
-
-.chat-dropdown button {
-    background: none;
-    border: none;
-    color: var(--text-color);
-    padding: 8px 14px;
-    cursor: pointer;
-    text-align: left;
-}
-
-.chat-dropdown button:hover {
-    background-color: var(--accent);
-    color: #fff;
-}
-
-/* ===== RIGHT SIDEBAR (MEMORY CARDS) ===== */
-.memory-sidebar {
-    background-color: var(--card-bg);
-    border-left: 1px solid var(--border-color);
-    padding: 16px;
-    overflow-y: auto;
-    box-shadow: inset 2px 0 6px rgba(0, 0, 0, 0.3);
-}
-
-.memory-tools {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-}
-
-#memorySearch {
-flex-grow: 1;
-padding: 8px 12px;
-border-radius: var(--radius);
-border: 1px solid var(--border-color);
-background-color: var(--bg-color);
-color: var(--text-color);
-}
-
-#clearAllMemoriesBtn {
-background-color: var(--danger);
-color: #fff;
-padding: 0 12px;
-border: none;
-border-radius: var(--radius);
-cursor: pointer;
-transition: var(--transition);
-}
-
-#clearAllMemoriesBtn:hover {
-background-color: #ef4444;
-}
-
-/* Memory Card Styling */
-.memory-card {
-    background-color: #222;
-    border-radius: var(--radius);
-    padding: 12px;
-    margin-bottom: 12px;
-    position: relative;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.memory-card:hover {
-    background-color: var(--accent);
-    color: #fff;
-}
-
-.memory-title {
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-.memory-tag {
-    font-size: 0.85rem;
-    opacity: 0.7;
-}
-
-.memory-date {
-    position: absolute;
-    bottom: 10px;
-    left: 12px;
-    font-size: 0.75rem;
-    opacity: 0.6;
-}
-
-.memory-delete {
-    position: absolute;
-    bottom: 8px;
-    right: 10px;
-    background-color: var(--danger);
-    color: #fff;
-    padding: 4px 8px;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.memory-delete:hover {
-    background-color: #ef4444;
-}
-
-/* ===========================================
- * 🖌️ Aver-Web Ultimate CSS (v4.0)
- * ===========================================
- * Part 5 of 5: Chatbox, Chat Messages, Code Blocks & Responsive Design
- * =========================================== */
-
-/* ===== CHAT SECTION ===== */
-.chat-section {
-    background-color: var(--bg-color);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.chat-header {
-    text-align: center;
-    margin-bottom: 16px;
-}
-
-.chat-box {
-    flex-grow: 1;
-    background-color: var(--card-bg);
-    border-radius: var(--radius);
-    padding: 20px;
-    overflow-y: auto;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-/* ===== CHAT BUBBLES ===== */
-.chat-bubble {
-    max-width: 80%;
-    padding: 12px 16px;
-    border-radius: var(--radius);
-    position: relative;
-    box-shadow: var(--shadow);
-    animation: fadeInUp 0.4s ease;
-}
-
-.user-msg {
-    align-self: flex-end;
-    background: linear-gradient(135deg, #2e2e2e, #383838);
-}
-
-.ai-msg {
-    align-self: flex-start;
-    background: linear-gradient(135deg, #1e3a8a, #2563eb);
-    color: #e0efff;
-}
-
-.system-msg {
-    align-self: center;
-    background-color: #333;
-    color: #fff;
-    font-style: italic;
-    font-size: 0.85rem;
-    padding: 8px 12px;
-    border-radius: var(--radius);
-}
-
-/* Typing Indicator */
-.typing-indicator {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.typing-indicator span {
-    width: 8px;
-    height: 8px;
-    background-color: #aaa;
-    border-radius: 50%;
-    animation: bounce 1s infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: scale(0.5); opacity: 0.5; }
-    50% { transform: scale(1); opacity: 1; }
-}
-
-/* ===== CODE BLOCKS ===== */
-.message-content code {
-    background-color: #111;
-    color: #ffcc66;
-    padding: 2px 4px;
-    border-radius: 4px;
-}
-
-.message-content pre {
-    background-color: #121212;
-    padding: 10px 14px;
-    border-radius: var(--radius);
-    overflow-x: auto;
-    border: 1px solid #222;
-    margin: 6px 0;
-}
-
-.message-content pre code {
-    display: block;
-    color: #eaeaea;
-}
-
-/* ===== COPY BUTTON ===== */
-.copy-btn {
-    position: absolute;
-    top: 6px;
-    right: 8px;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    padding: 4px 6px;
-    border-radius: 6px;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: var(--transition);
-}
-
-.copy-btn:hover {
-    opacity: 1;
-}
-
-/* ===== RESPONSIVE DESIGN FOR CHAT PAGE ===== */
-@media (max-width: 1024px) {
-    .chat-page {
-        grid-template-columns: 220px 1fr 240px;
-    }
-}
-
-@media (max-width: 768px) {
-    .chat-page {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr auto;
-    }
-
-    .sidebar,
-    .memory-sidebar {
-        height: 200px;
-        border: none;
-    }
-
-    .chat-section {
-        padding: 16px;
-    }
-}
-
-@media (max-width: 480px) {
-    .chat-bubble {
-        max-width: 95%;
-    }
-
-    .chat-section {
-        padding: 12px;
-    }
-
-    .chat-box {
-        padding: 14px;
+    .welcome-box, .slider.placeholder {
+        width: 90%;
     }
 }

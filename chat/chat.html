@@ -1,90 +1,89 @@
-<!-- File: chat.html -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#1e1e1e" />
-  <title>Aver AI – Chat</title>
-
-  <!-- Favicon & Icons -->
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/assets/aw_touch_icon_180x180.png" sizes="180x180" />
-  <link rel="manifest" href="/manifest.json" />
-
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="/css/style.css" />
+  <meta charset="UTF-8">
+  <title>Aver-Web | AI Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="module" src="/js/authentication.js"></script>
 </head>
 
 <body>
 
-  <!-- Dynamic Floating Header Mount Point -->
-  <div id="headerMountPoint"></div>
+  <!-- Dynamic Floating Header -->
+  <div id="header"></div>
 
-  <!-- Main Chat Layout -->
-  <main class="chat-page">
+  <!-- Main Chat Content -->
+  <main id="chat-container">
 
-    <!-- Left Sidebar (Saved Chats) -->
-    <aside class="sidebar">
-      <input type="text" id="chatSearch" class="sidebar-search" placeholder="🔍 Search chats..." />
-      <button id="newChatBtn" class="sidebar-btn">🆕 New Chat</button>
-      <div id="chatHistory" class="chat-history">
-        <!-- Dynamically loaded chat history -->
-      </div>
-    </aside>
+    <!-- Left Sidebar (Chat History) -->
+    <aside id="chat-history"></aside>
 
-    <!-- Center Chat Section -->
-    <section class="chat-section">
-      <div class="chat-header">
-        <h2 id="chatSessionTitle" class="animated fadeIn">✨ AI Chat Session</h2>
-      </div>
-      <div id="chatBox" class="chat-box">
-        <!-- AI and User messages dynamically injected here -->
-      </div>
-
-      <!-- Hidden form integrated with modular chatbox-modal -->
-      <form id="chatForm" class="hidden-form" style="display:none;">
-        <input type="hidden" id="chatInput" />
-      </form>
+    <!-- Center Chat Interface -->
+    <section id="chat-main">
+      <div id="chatMessages" class="chat-messages"></div>
+      <div id="chatboxContainer"></div>
     </section>
 
-    <!-- Right Sidebar (Memory Cards) -->
-    <aside class="memory-sidebar">
-      <div class="memory-tools">
-        <input type="text" id="memorySearch" placeholder="🔍 Search memories..." />
-        <button id="clearAllMemoriesBtn" title="Clear All Memories">🧹</button>
-      </div>
-      <div id="memoryList" class="memory-list">
-        <!-- Dynamically loaded memory cards -->
-      </div>
-    </aside>
+    <!-- Right Sidebar (Memory System) -->
+    <aside id="memory-sidebar"></aside>
 
   </main>
 
-  <!-- Dynamic Footer Mount Point -->
-  <div id="footerMountPoint"></div>
+  <!-- Dynamic Footer (Theme Toggle Included) -->
+  <div id="footer"></div>
+
+  <!-- Modals (Login, Register, Profile) -->
+<!-- Login Modal -->
+<div id="loginModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Login</h2>
+    <input type="text" id="loginUsername" placeholder="Username">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <label><input type="checkbox" id="rememberMe"> Remember Me</label>
+    <button id="loginSubmit">Login</button>
+    <p id="loginError" class="modal-error"></p>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div id="registerModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Register</h2>
+    <input type="text" id="registerUsername" placeholder="Username">
+    <input type="password" id="registerPassword" placeholder="Password">
+    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password">
+    <button id="registerSubmit">Register</button>
+    <p id="registerError" class="modal-error"></p>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div id="profileModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Your Profile</h2>
+    <input type="text" id="profileName" placeholder="Full Name">
+    <input type="text" id="profileCountry" placeholder="Country">
+    <input type="url" id="profileWebsite" placeholder="Website URL">
+    <textarea id="profileBio" placeholder="Short Bio"></textarea>
+    <hr>
+    <input type="password" id="oldPassword" placeholder="Old Password">
+    <input type="password" id="newPassword" placeholder="New Password">
+    <input type="password" id="confirmNewPassword" placeholder="Confirm New Password">
+    <button id="profileSubmit">Save Changes</button>
+    <p id="profileMessage" class="modal-error"></p>
+  </div>
+</div>
+
 
   <!-- JavaScript Modules -->
-  <script type="module">
-    import { injectHeaderFooter } from '/js/injectHeaderFooter.js';
-    import { initThemeToggle } from '/js/themeToggle.js';
-    import { initChatboxModal } from '/js/chatbox-modal.js';
-    import '/js/chat.js';
-    import '/js/logger.js';
-
-    // Inject header/footer and dynamically adjust header buttons (AI Chat→Home)
-    injectHeaderFooter('chat');
-
-    // Initialize persistent theme toggle (Dark/Light Mode)
-    initThemeToggle();
-
-    // Initialize modular Chatbox modal input
-    initChatboxModal(async (message) => {
-      document.getElementById("chatInput").value = message;
-      document.getElementById("chatForm").dispatchEvent(new Event("submit"));
-    });
-  </script>
+  <script type="module" src="/js/header.js"></script>
+  <script type="module" src="/js/footer.js"></script>
+  <script type="module" src="/js/chatbox-modal.js"></script>
+  <script type="module" src="/js/chat.js"></script>
 
 </body>
+
 </html>
