@@ -1,27 +1,44 @@
-// File: /js/logger.js
+// ========================================
+// 📝 logger.js (v2.0)
+// ========================================
+// Frontend Logging Utility
+// Clear categorization & structured logging
+// ========================================
 
-// Call this from anywhere: logJS('error', 'Something failed here', 'chat.js')
-export function logJS(severity = 'info', message = '', file = 'unknown.js', type = 'js') {
-    try {
-        fetch('/backend/ajax/ajax_logger.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ severity, message, file, type })
-        });
-    } catch (e) {
-        console.warn('Logger failed:', e);
+export const Logger = {
+    log: (message, ...args) => {
+        console.log(`🟢 [LOG]: ${message}`, ...args);
+        sendLogToServer('log', message, args);
+    },
+    info: (message, ...args) => {
+        console.info(`🔵 [INFO]: ${message}`, ...args);
+        sendLogToServer('info', message, args);
+    },
+    warn: (message, ...args) => {
+        console.warn(`🟡 [WARN]: ${message}`, ...args);
+        sendLogToServer('warn', message, args);
+    },
+    error: (message, ...args) => {
+        console.error(`🔴 [ERROR]: ${message}`, ...args);
+        sendLogToServer('error', message, args);
+    },
+    debug: (message, ...args) => {
+        console.debug(`🟣 [DEBUG]: ${message}`, ...args);
+        sendLogToServer('debug', message, args);
     }
-}
-
-// Auto-capture global JS errors
-window.onerror = function (msg, src, line, col, error) {
-    const message = `${msg} at ${src}:${line}:${col}`;
-    logJS('error', message, src || 'unknown.js');
 };
 
-// Optional: Catch unhandled promise rejections
-window.addEventListener('unhandledrejection', function (e) {
-    const message = `Promise rejection: ${e.reason}`;
-    logJS('error', message, 'unhandled-promise');
-});
-
+// Send logs to server-side logger
+function sendLogToServer(level, message, data) {
+    fetch('/backend/ajax/ajax_logger.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            level: level,
+            message: message,
+            data: data,
+            timestamp: new Date().toISOString()
+        })
+    }).catch(console.error);
+}

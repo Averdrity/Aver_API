@@ -1,44 +1,50 @@
 <?php
-// File: /auth/ajax_login.php
+// ===========================================
+// 🔐 ajax_login.php (v2.0)
+// ===========================================
+// Secure user login handler (AJAX)
+// ===========================================
 
+header('Content-Type: application/json');
+require_once '../includes/db.php';
 session_start();
-header("Content-Type: application/json");
 
-require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../includes/logger.php';
+$response = ['success' => false, 'message' => ''];
 
-$data = json_decode(file_get_contents("php://input"), true);
-$username = trim($data['username'] ?? '');
-$password = trim($data['password'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-if (!$username || !$password) {
-    echo json_encode(["error" => "Username and password required."]);
-    exit;
-}
+    $input = json_decode(file_get_contents('php://input'), true);
+    $username = trim($input['username'] ?? '');
+    $password = trim($input['password'] ?? '');
 
-try {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username LIMIT 1");
-    $stmt->execute([':username' => $username]);
-    $user = $stmt->fetch();
-
-    if (!$user || !password_verify($password, $user['password'])) {
-        log_to_db('php', 'warning', "Login failed for $username", 'ajax_login.php');
-        echo json_encode(["error" => "Invalid credentials."]);
-        exit;
+    if (empty($username) || empty($password)) {
+        $response['message'] = 'Username and password required.';
+        exit(json_encode($response));
     }
 
-    // Set session
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['username'] = $user['username'];
+    try {
+        // Fetch user securely
+        $stmt = $pdo->prepare("SELECT id, password FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    log_to_file('php', "User logged in: $username", 'ajax_login.php');
-    log_to_db('php', 'info', "Login: $username", 'ajax_login.php');
+        if ($user && password_verify($password, $user['password'])) {
+            // Set session on success
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $username;
 
-    echo json_encode(["success" => true, "username" => $username]);
+            $response['success'] = true;
+            $response['message'] = 'Login successful.';
+        } else {
+            $response['message'] = 'Invalid username or password.';
+        }
 
-} catch (Exception $e) {
-    log_to_file('php', "Login error: " . $e->getMessage(), 'ajax_login.php');
-    log_to_db('php', 'error', $e->getMessage(), 'ajax_login.php');
-    echo json_encode(["error" => "Server error"]);
+    } catch (PDOException $e) {
+        error_log("Login Error: " . $e->getMessage());
+        $response['message'] = 'Server error during login.';
+    }
+} else {
+    $response['message'] = 'Invalid request method.';
 }
 
+echo json_encode($response);

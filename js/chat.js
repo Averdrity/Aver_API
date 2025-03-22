@@ -1,180 +1,417 @@
-// File: /js/chat.js
+// ========================================
+// 🤖 chat.js (v4.0)
+// ========================================
+// Main Chat Logic & AI Integration
+// Part 1 of 5: Initialization & Globals
+// ========================================
 
-let chatMessages = [];
-let isAIThinking = false;
+// Global State
+let currentChatId = null;
+let chatHistory = [];
+let memories = [];
+let aiThinking = false;
 
+// DOM Elements
+const chatBox = document.getElementById('chatBox');
+const chatSessionTitle = document.getElementById('chatSessionTitle');
+const newChatBtn = document.getElementById('newChatBtn');
+const chatSearchInput = document.getElementById('chatSearch');
+const memorySearchInput = document.getElementById('memorySearch');
+const memoryList = document.getElementById('memoryList');
+
+// Initialization
 document.addEventListener('DOMContentLoaded', () => {
-    const chatForm = document.getElementById('chatForm');
-    const chatBox = document.getElementById('chatBox');
-    const chatInput = document.getElementById('chatInput');
-
-    chatForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (isAIThinking) return;
-
-        const message = chatInput.value.trim();
-        if (!message) return;
-
-        renderMessage('user', message);
-        chatMessages.push({ sender: 'user', content: message });
-
-        chatInput.value = '';
-        isAIThinking = true;
-        showTypingIndicator();
-
-        const response = await fetchAIResponse(message);
-        removeTypingIndicator();
-
-        if (response) {
-            renderMessage('ai', response);
-            chatMessages.push({ sender: 'ai', content: response });
-
-            if (chatMessages.length === 2) saveNewChat(chatMessages);
-        }
-
-        isAIThinking = false;
-    });
+    initializeChatSession();
+    loadChatHistory();
+    loadMemories();
+    setupEventListeners();
 });
 
-function renderMessage(sender, content) {
+// Initialize a new Chat Session
+function initializeChatSession() {
+    currentChatId = null;
+    chatSessionTitle.textContent = '✨ AI Chat Session';
+    chatBox.innerHTML = '';
+}
+
+// Setup global event listeners
+function setupEventListeners() {
+    newChatBtn.onclick = () => startNewChat();
+    chatSearchInput.addEventListener('input', filterChatHistory);
+    memorySearchInput.addEventListener('input', filterMemories);
+}
+
+// ========================================
+// 🤖 chat.js (v4.0)
+// ========================================
+// Part 2 of 5: Load & Render Chat History
+// ========================================
+
+// Load saved chat history from the server
+async function loadChatHistory() {
+    try {
+        const res = await fetch('/backend/ajax/ajax_chat_handler.php?action=getChats', {
+            credentials: 'include'
+        });
+        const data = await res.json();
+        chatHistory = data.chats;
+        renderChatHistory(chatHistory);
+    } catch (error) {
+        console.error('Failed to load chats:', error);
+    }
+}
+
+// Render Chat History in the Sidebar
+function renderChatHistory(chats) {
+    const chatHistoryContainer = document.getElementById('chatHistory');
+    chatHistoryContainer.innerHTML = '';
+
+    if (!chats || !Array.isArray(chats)) {
+        console.warn('No chats found or invalid response.');
+        return;
+    }
+
+    const categorizedChats = categorizeChatsByDate(chats);
+
+    Object.entries(categorizedChats).forEach(([category, chats]) => {
+        const categoryHeader = document.createElement('h4');
+        categoryHeader.textContent = category;
+        categoryHeader.classList.add('chat-category-header');
+        chatHistoryContainer.appendChild(categoryHeader);
+
+        chats.forEach(chat => {
+            const chatItem = document.createElement('div');
+            chatItem.classList.add('chat-item');
+            chatItem.dataset.chatId = chat.id;
+            chatItem.textContent = chat.title;
+
+            const optionsBtn = document.createElement('button');
+            optionsBtn.classList.add('chat-options');
+            optionsBtn.innerHTML = '⋮';
+            chatItem.appendChild(optionsBtn);
+
+            const dropdownMenu = document.createElement('div');
+            dropdownMenu.classList.add('chat-dropdown');
+            dropdownMenu.innerHTML = `
+            <button onclick="loadChat('${chat.id}')">📂 Load Chat</button>
+            <button onclick="renameChat('${chat.id}')">✏️ Rename Chat</button>
+            <button onclick="deleteChat('${chat.id}')">🗑️ Delete Chat</button>
+            `;
+            chatItem.appendChild(dropdownMenu);
+
+            optionsBtn.onclick = (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('visible');
+            };
+
+            chatHistoryContainer.appendChild(chatItem);
+        });
+    });
+}
+
+
+// Categorize chats by date
+function categorizeChatsByDate(chats) {
+    const categories = {
+        'Today': [],
+        'Yesterday': [],
+        'Previous 7 Days': [],
+        'Previous 30 Days': [],
+        'Older': []
+    };
+
+    const now = new Date();
+
+    chats.forEach(chat => {
+        const chatDate = new Date(chat.created_at);
+        const diffDays = Math.floor((now - chatDate) / (1000 * 3600 * 24));
+
+        if (diffDays === 0) categories['Today'].push(chat);
+        else if (diffDays === 1) categories['Yesterday'].push(chat);
+        else if (diffDays <= 7) categories['Previous 7 Days'].push(chat);
+        else if (diffDays <= 30) categories['Previous 30 Days'].push(chat);
+        else categories['Older'].push(chat);
+    });
+
+        return categories;
+}
+
+// Filter chats based on search input
+function filterChatHistory() {
+    const query = chatSearchInput.value.toLowerCase();
+    const filteredChats = chatHistory.filter(chat => chat.title.toLowerCase().includes(query));
+    renderChatHistory(filteredChats);
+}
+
+// ========================================
+// 🤖 chat.js (v4.0)
+// ========================================
+// Part 3 of 5: Handling New Chats & Options
+// ========================================
+
+// Start a New Chat Session
+function startNewChat() {
+    initializeChatSession();
+    displaySystemMessage('🆕 New chat session started.');
+}
+
+// Load a chat from history
+async function loadChat(chatId) {
+    try {
+        const res = await fetch(`/backend/ajax/ajax_chat_handler.php?action=getMessages&chatId=${chatId}`, {
+            credentials: 'include'
+        });
+        const data = await res.json();
+        currentChatId = chatId;
+        chatSessionTitle.textContent = data.chatTitle || 'Loaded Chat';
+        renderMessages(data.messages);
+    } catch (error) {
+        console.error('Failed to load chat:', error);
+    }
+}
+
+// Rename chat
+function renameChat(chatId) {
+    const newTitle = prompt('Enter new chat title:');
+    if (!newTitle) return;
+
+    fetch(`/backend/ajax/ajax_chat_handler.php?action=renameChat&chatId=${chatId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: newTitle })
+    }).then(() => {
+        loadChatHistory();
+    });
+}
+
+// Delete chat
+function deleteChat(chatId) {
+    if (confirm('Are you sure you want to delete this chat?')) {
+        fetch(`/backend/ajax/ajax_chat_handler.php?action=deleteChat&chatId=${chatId}`, {
+            method: 'POST',
+            credentials: 'include'
+        }).then(() => {
+            if (chatId === currentChatId) startNewChat();
+            loadChatHistory();
+        });
+    }
+}
+
+// Render loaded messages
+function renderMessages(messages) {
+    chatBox.innerHTML = '';
+    messages.forEach(msg => renderMessage(msg.role, msg.content));
+}
+
+// Render individual message
+function renderMessage(role, content) {
     const bubble = document.createElement('div');
-    bubble.classList.add('chat-bubble', `${sender}-msg`);
-
-    const msgWrapper = document.createElement('div');
-    msgWrapper.classList.add('message-content');
-    msgWrapper.innerHTML = renderFormatted(content);
-
-    bubble.appendChild(msgWrapper);
-    document.getElementById('chatBox').appendChild(bubble);
-    scrollToBottom();
-}
-
-function renderFormatted(text) {
-    let html = text
-    .replace(/\n/g, '<br>')
-    .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-    .replace(/<code>(.*?)<\/code>/g, '<code>$1</code>');
-    return html;
-}
-
-function showTypingIndicator() {
-    const typing = document.createElement('div');
-    typing.classList.add('typing-indicator');
-    typing.id = 'typingIndicator';
-    typing.innerHTML = '<span></span><span></span><span></span>';
-    document.getElementById('chatBox').appendChild(typing);
-    scrollToBottom();
-}
-
-function removeTypingIndicator() {
-    const el = document.getElementById('typingIndicator');
-    if (el) el.remove();
-}
-
-function scrollToBottom() {
-    const chatBox = document.getElementById('chatBox');
+    bubble.classList.add('chat-bubble', role === 'user' ? 'user-msg' : 'ai-msg');
+    bubble.innerHTML = `
+    <div class="message-content">${content}</div>
+    <button class="copy-btn" onclick="copyText(this)">📋</button>
+    `;
+    chatBox.appendChild(bubble);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-async function fetchAIResponse(message) {
+// Display temporary system message
+function displaySystemMessage(content) {
+    const sysMsg = document.createElement('div');
+    sysMsg.classList.add('chat-bubble', 'system-msg');
+    sysMsg.textContent = content;
+    chatBox.appendChild(sysMsg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    setTimeout(() => sysMsg.remove(), 3000);
+}
+
+// Copy message content to clipboard
+function copyText(btn) {
+    const text = btn.previousElementSibling.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '✅';
+        setTimeout(() => (btn.textContent = '📋'), 2000);
+    });
+}
+
+// ========================================
+// 🤖 chat.js (v4.0)
+// ========================================
+// Part 4 of 5: Memory System Management
+// ========================================
+
+// Load user memories from server
+async function loadMemories() {
     try {
-        const res = await fetch('/backend/ajax/ajax_chat_handler.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message })
+        const res = await fetch('/backend/ajax/ajax_memory_handler.php?action=getMemories', {
+            credentials: 'include'
         });
         const data = await res.json();
-        return data.reply || '[No reply]';
-    } catch (err) {
-        console.error('AI fetch failed:', err);
-        return '[Error: AI not responding]';
+        memories = data.memories;
+        renderMemories(memories);
+    } catch (error) {
+        console.error('Failed to load memories:', error);
     }
 }
 
-// CONTINUATION: /js/chat.js
-
-function saveNewChat(messages) {
-    const firstUserMsg = messages.find(m => m.sender === 'user')?.content || '';
-    const autoTitle = generateChatTitle(firstUserMsg);
-
-    const chat = {
-        id: Date.now(),
-        title: autoTitle,
-        messages,
-        date: new Date().toISOString()
-    };
-
-    // Save to localStorage (or call backend)
-    const savedChats = JSON.parse(localStorage.getItem('savedChats') || '[]');
-    savedChats.push(chat);
-    localStorage.setItem('savedChats', JSON.stringify(savedChats));
-
-    renderChatItem(chat);
-}
-
-function generateChatTitle(text) {
-    const words = text.trim().split(/\s+/).slice(0, 5).join(' ');
-    const keywords = ['Question', 'Idea', 'Prompt', 'Note'];
-    const keyword = keywords[Math.floor(Math.random() * keywords.length)];
-    return `${keyword}: ${words}`;
-}
-
-function renderChatItem(chat) {
-    const group = getChatDateGroup(chat.date);
-    const history = document.getElementById('chatHistory');
-
-    // Create group block if not exists
-    let groupEl = document.querySelector(`.chat-history-group[data-group="${group}"]`);
-    if (!groupEl) {
-        groupEl = document.createElement('div');
-        groupEl.classList.add('chat-history-group');
-        groupEl.dataset.group = group;
-        groupEl.innerHTML = `<div class="chat-history-date">${group}</div>`;
-        history.appendChild(groupEl);
+// Render memories as cards
+function renderMemories(memoryArray) {
+    memoryList.innerHTML = '';
+    if (!memoryArray || !Array.isArray(memoryArray)) {
+        console.warn('No memories found or invalid response.');
+        return;
     }
 
-    const item = document.createElement('div');
-    item.classList.add('chat-item');
-    item.innerHTML = `
-    <span class="chat-title-text">${chat.title}</span>
-    <button class="chat-options" title="Options">⋮</button>
-    <div class="chat-dropdown">
-    <button onclick="loadChat(${chat.id})">📂 Load</button>
-    <button onclick="editChatTitle(${chat.id})">✏️ Edit</button>
-    <button onclick="deleteChat(${chat.id})">❌ Delete</button>
-    </div>
-    `;
+    memoryArray.forEach(memory => {
+        const card = document.createElement('div');
+        card.classList.add('memory-card');
+        card.dataset.memoryId = memory.id;
+        card.innerHTML = `
+        <div class="memory-title">${memory.title}</div>
+        <div class="memory-tag">${memory.tags}</div>
+        <div class="memory-date">${new Date(memory.created_at).toLocaleDateString()}</div>
+        <button class="memory-delete">🗑️</button>
+        `;
 
-    item.querySelector('.chat-options').addEventListener('click', (e) => {
-        const dropdown = item.querySelector('.chat-dropdown');
-        dropdown.classList.toggle('visible');
-        e.stopPropagation();
+        card.onclick = (e) => {
+            if (!e.target.classList.contains('memory-delete')) {
+                editMemory(memory.id);
+            }
+        };
+
+        card.querySelector('.memory-delete').onclick = (e) => {
+            e.stopPropagation();
+            deleteMemory(memory.id);
+        };
+
+        memoryList.appendChild(card);
+    });
+}
+
+
+// Edit memory content
+function editMemory(memoryId) {
+    const memory = memories.find(mem => mem.id === memoryId);
+    const newContent = prompt('Edit memory content:', memory.content);
+    if (newContent === null) return;
+
+    fetch(`/backend/ajax/ajax_memory_handler.php?action=editMemory&memoryId=${memoryId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: newContent })
+    }).then(() => loadMemories());
+}
+
+// Delete memory
+function deleteMemory(memoryId) {
+    if (confirm('Are you sure you want to delete this memory?')) {
+        fetch(`/backend/ajax/ajax_memory_handler.php?action=deleteMemory&memoryId=${memoryId}`, {
+            method: 'POST',
+            credentials: 'include'
+        }).then(() => loadMemories());
+    }
+}
+
+// Filter memories based on search input
+function filterMemories() {
+    const query = memorySearchInput.value.toLowerCase();
+    const filtered = memories.filter(mem =>
+    mem.title.toLowerCase().includes(query) || mem.tags.toLowerCase().includes(query)
+    );
+    renderMemories(filtered);
+}
+
+// Clear all memories
+document.getElementById('clearAllMemoriesBtn').onclick = () => {
+    if (confirm('Clear all memories? This action is irreversible.')) {
+        fetch('/backend/ajax/ajax_memory_handler.php?action=clearAll', {
+            method: 'POST',
+            credentials: 'include'
+        }).then(() => loadMemories());
+    }
+};
+
+// ========================================
+// 🤖 chat.js (v4.0)
+// ========================================
+// Part 5 of 5: Sending/Receiving & AI Integration
+// ========================================
+
+// Event listener for chat form submission
+document.getElementById('chatForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (message && !aiThinking) {
+        sendMessage(message);
+        input.value = '';
+    }
+});
+
+// Send message and fetch AI response
+async function sendMessage(message) {
+    renderMessage('user', message);
+    aiThinking = true;
+    renderTypingIndicator(true);
+
+    // Save message to server and get chatId if new
+    const saveRes = await fetch('/backend/ajax/ajax_chat_handler.php?action=saveMessage', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatId: currentChatId, role: 'user', content: message })
     });
 
-    groupEl.appendChild(item);
+    const saveData = await saveRes.json();
+    if (!currentChatId) {
+        currentChatId = saveData.chatId;
+        loadChatHistory();
+    }
+
+    // Fetch AI response from Flask backend
+    try {
+        const aiRes = await fetch('/backend/ollama-server.py', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: message })
+        });
+
+        const aiData = await aiRes.json();
+        const aiMessage = aiData.response || 'Oops! Something went wrong.';
+
+        renderMessage('ai', aiMessage);
+
+        // Save AI message to server
+        fetch('/backend/ajax/ajax_chat_handler.php?action=saveMessage', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chatId: currentChatId, role: 'ai', content: aiMessage })
+        });
+
+    } catch (error) {
+        console.error('AI response error:', error);
+        renderMessage('system', 'Error fetching AI response.');
+    }
+
+    aiThinking = false;
+    renderTypingIndicator(false);
 }
 
-function getChatDateGroup(date) {
-    const d = new Date(date);
-    const now = new Date();
-    const diff = (now - d) / (1000 * 60 * 60 * 24);
-
-    if (diff < 1) return 'Today';
-    if (diff < 2) return 'Yesterday';
-    if (diff < 7) return 'Last 7 Days';
-    if (diff < 30) return 'Last 30 Days';
-
-    return d.toLocaleString('default', { month: 'long', year: 'numeric' });
-}
-
-window.loadChat = (id) => alert(`Loading chat #${id}...`);
-window.editChatTitle = (id) => alert(`Edit title for chat #${id}`);
-window.deleteChat = (id) => {
-    if (confirm('Are you sure to delete this chat?')) {
-        let savedChats = JSON.parse(localStorage.getItem('savedChats') || '[]');
-        savedChats = savedChats.filter(c => c.id !== id);
-        localStorage.setItem('savedChats', JSON.stringify(savedChats));
-        location.reload();
+// Typing indicator
+function renderTypingIndicator(active) {
+    if (active) {
+        const indicator = document.createElement('div');
+        indicator.classList.add('chat-bubble', 'ai-msg', 'typing-indicator');
+        indicator.innerHTML = '<span></span><span></span><span></span>';
+        indicator.id = 'typingIndicator';
+        chatBox.appendChild(indicator);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    } else {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
     }
 }
-

@@ -1,43 +1,49 @@
 <?php
-// File: /auth/ajax_update_profile.php
+// ===========================================
+// 👤 ajax_update_profile.php (v2.0)
+// ===========================================
+// Secure profile information update (AJAX)
+// ===========================================
 
+header('Content-Type: application/json');
+require_once '../includes/db.php';
 session_start();
-header("Content-Type: application/json");
 
-require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../includes/logger.php';
+$response = ['success' => false, 'message' => ''];
 
 if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["error" => "Not logged in"]);
-    exit;
+    $response['message'] = 'You must be logged in to update your profile.';
+    exit(json_encode($response));
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
-$name = trim($data['name'] ?? '');
-$country = trim($data['country'] ?? '');
-$website = trim($data['website'] ?? '');
-$bio = trim($data['bio'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-try {
-    $stmt = $pdo->prepare("UPDATE users
-    SET name=:name, country=:country, website=:website, bio=:bio
-    WHERE id=:id");
-    $stmt->execute([
-        ':name' => $name,
-        ':country' => $country,
-        ':website' => $website,
-        ':bio' => $bio,
-        ':id' => $_SESSION['user_id']
-    ]);
+    $input = json_decode(file_get_contents('php://input'), true);
 
-    log_to_file('php', "Profile updated: {$_SESSION['username']}", 'ajax_update_profile.php');
-    log_to_db('php', 'info', "Profile updated by user", 'ajax_update_profile.php');
+    // Sanitize & validate inputs
+    $name = trim(filter_var($input['name'] ?? '', FILTER_SANITIZE_STRING));
+    $country = trim(filter_var($input['country'] ?? '', FILTER_SANITIZE_STRING));
+    $website = trim(filter_var($input['website'] ?? '', FILTER_VALIDATE_URL));
+    $bio = trim(filter_var($input['bio'] ?? '', FILTER_SANITIZE_STRING));
 
-    echo json_encode(["success" => true]);
+    try {
+        $stmt = $pdo->prepare("
+        UPDATE users
+        SET name = ?, country = ?, website = ?, bio = ?
+        WHERE id = ?
+        ");
 
-} catch (Exception $e) {
-    log_to_file('php', "Profile update error: " . $e->getMessage(), 'ajax_update_profile.php');
-    log_to_db('php', 'error', $e->getMessage(), 'ajax_update_profile.php');
-    echo json_encode(["error" => "Server error"]);
+        $stmt->execute([$name, $country, $website, $bio, $_SESSION['user_id']]);
+
+        $response['success'] = true;
+        $response['message'] = 'Profile updated successfully.';
+
+    } catch (PDOException $e) {
+        error_log("Profile Update Error: " . $e->getMessage());
+        $response['message'] = 'Server error while updating profile.';
+    }
+} else {
+    $response['message'] = 'Invalid request method.';
 }
 
+echo json_encode($response);

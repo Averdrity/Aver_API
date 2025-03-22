@@ -105,18 +105,22 @@ function showModelStatus() {
   });
 }
 
-// Placeholder modal functions (replace with real implementations)
+// Real implementation of modal functions
 function openLoginModal() {
-  console.log('Open login modal');
+  const loginModal = document.getElementById('loginModal');
+  if (loginModal) loginModal.style.display = 'flex';
 }
 
 function openRegisterModal() {
-  console.log('Open register modal');
+  const registerModal = document.getElementById('registerModal');
+  if (registerModal) registerModal.style.display = 'flex';
 }
 
 function openProfileModal() {
-  console.log('Open profile modal');
+  const profileModal = document.getElementById('profileModal');
+  if (profileModal) profileModal.style.display = 'flex';
 }
+
 
 function logoutUser() {
   fetch('/auth/logout.php', { credentials: 'include' })

@@ -1,43 +1,70 @@
 <?php
-// File: /auth/ajax_register.php
+// ===========================================
+// 🔐 ajax_register.php (v2.0)
+// ===========================================
+// Secure user registration handler (AJAX)
+// ===========================================
 
-header("Content-Type: application/json");
+header('Content-Type: application/json');
+require_once '../includes/db.php';
+session_start();
 
-require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../includes/logger.php';
+$response = ['success' => false, 'message' => ''];
 
-$data = json_decode(file_get_contents("php://input"), true);
-$username = trim($data['username'] ?? '');
-$password = trim($data['password'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-if (!$username || !$password) {
-    echo json_encode(["error" => "Username and password required."]);
-    exit;
-}
+    // Get input data safely
+    $input = json_decode(file_get_contents('php://input'), true);
+    $username = trim($input['username'] ?? '');
+    $password = trim($input['password'] ?? '');
+    $confirmPassword = trim($input['confirmPassword'] ?? '');
 
-try {
-    // Check existing user
-    $check = $pdo->prepare("SELECT id FROM users WHERE username = :username");
-    $check->execute([':username' => $username]);
-
-    if ($check->fetch()) {
-        echo json_encode(["error" => "Username already exists."]);
-        exit;
+    // Validate inputs
+    if (empty($username) || empty($password) || empty($confirmPassword)) {
+        $response['message'] = 'All fields are required.';
+        exit(json_encode($response));
     }
 
-    // Create new user
-    $hash = password_hash($password, PASSWORD_BCRYPT);
-    $stmt = $pdo->prepare("INSERT INTO users (username, password, registered_at) VALUES (:u, :p, NOW())");
-    $stmt->execute([':u' => $username, ':p' => $hash]);
+    if ($password !== $confirmPassword) {
+        $response['message'] = 'Passwords do not match.';
+        exit(json_encode($response));
+    }
 
-    log_to_file('php', "New registration: $username", 'ajax_register.php');
-    log_to_db('php', 'info', "Registered new user: $username", 'ajax_register.php');
+    if (strlen($username) < 3 || strlen($password) < 6) {
+        $response['message'] = 'Username must be at least 3 characters and password at least 6 characters.';
+        exit(json_encode($response));
+    }
 
-    echo json_encode(["success" => true]);
+    try {
+        // Check if username exists
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ?");
+        $stmt->execute([$username]);
 
-} catch (Exception $e) {
-    log_to_file('php', "Registration error: " . $e->getMessage(), 'ajax_register.php');
-    log_to_db('php', 'error', $e->getMessage(), 'ajax_register.php');
-    echo json_encode(["error" => "Server error"]);
+        if ($stmt->fetch()) {
+            $response['message'] = 'Username already exists.';
+            exit(json_encode($response));
+        }
+
+        // Hash the password securely
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        // Insert new user
+        $stmt = $pdo->prepare("INSERT INTO users (username, password, created_at) VALUES (?, ?, NOW())");
+        $stmt->execute([$username, $hashedPassword]);
+
+        // Start session upon successful registration
+        $_SESSION['user_id'] = $pdo->lastInsertId();
+        $_SESSION['username'] = $username;
+
+        $response['success'] = true;
+        $response['message'] = 'Registration successful. Logging you in...';
+
+    } catch (PDOException $e) {
+        error_log("Registration Error: " . $e->getMessage());
+        $response['message'] = 'Registration failed due to server error.';
+    }
+} else {
+    $response['message'] = 'Invalid request method.';
 }
 
+echo json_encode($response);
