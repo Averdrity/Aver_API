@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1e1e1e" />
+    <title>Aver AI – Chat</title>
+
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/assets/aw_touch_icon_180x180.png" sizes="180x180" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+
+    <div id="headerMountPoint"></div>
+
+    <main class="chat-page">
+
+        <aside class="sidebar" aria-label="Chat History">
+            <div class="sidebar-header">
+                <h2>Chat History</h2>
+                <button id="newChatBtn" class="sidebar-btn">
+                    <span aria-hidden="true">🆕</span> New Chat
+                </button>
+            </div>
+            <input type="text" id="chatSearch" class="sidebar-search" placeholder="🔍 Search chats..."
+                aria-label="Search chat history" />
+            <div id="chatHistory" class="chat-history" role="list">
+                </div>
+        </aside>
+
+        <section class="chat-section" aria-label="Chat Messages">
+            <div class="chat-header">
+                <h2 id="chatSessionTitle" class="animated fadeIn">✨ AI Chat Session</h2>
+            </div>
+            <div id="chatBox" class="chat-box" role="log" aria-live="polite">
+                </div>
+
+            <div class="chat-input-area">
+                <textarea id="chatInput" class="chat-input" placeholder="Type a message..."
+                    aria-label="Chat input" aria-describedby="chat-submit-button"></textarea>
+                <button id="chat-submit-button" aria-label="Send message">
+                    <span aria-hidden="true">Send</span>
+                </button>
+            </div>
+        </section>
+
+        <aside class="memory-sidebar" aria-label="Memory Cards">
+            <div class="sidebar-header">
+                <h2>Memories</h2>
+                <div class="memory-tools">
+                    <input type="text" id="memorySearch" placeholder="🔍 Search memories..."
+                        aria-label="Search memories" />
+                    <button id="clearAllMemoriesBtn" title="Clear All Memories" aria-label="Clear all memories">
+                        <span aria-hidden="true">🧹</span>
+                    </button>
+                </div>
+            </div>
+            <div id="memoryList" class="memory-list">
+                </div>
+        </aside>
+
+    </main>
+
+    <div id="footerMountPoint"></div>
+
+    <script type="module">
+    import { HeaderFooterInjector } from '/js/injectHeaderFooter.js';
+    import { ThemeToggle } from '/js/themeToggle.js';
+    import { initChatboxModal } from '/js/chatbox-modal.js';
+    import { Chat } from '/js/chat.js';
+    import '/js/logger.js';
+
+    // Inject header/footer and dynamically adjust header buttons (AI Chat→Home)
+    //injectHeaderFooter('chat'); // Removed or Commented out
+    new HeaderFooterInjector();  // Corrected Instantiation
+
+    // Initialize persistent theme toggle (Dark/Light Mode)
+    new ThemeToggle();
+
+    // Initialize modular Chatbox modal input
+    //initChatboxModal(async (message) => {
+    //    document.getElementById("chatInput").value = message;
+    //    document.getElementById("chatForm").dispatchEvent(new Event("submit"));
+    //});
+
+    // Initialize Chat Class
+    const chat = new Chat();
+    chat.init();
+</script>
+
+</body>
+
+</html>

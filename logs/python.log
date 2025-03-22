@@ -1,0 +1,13 @@
+[2025-03-21 17:02:06,001] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.90:5000
+[2025-03-21 17:02:06,001] INFO in _internal: [33mPress CTRL+C to quit[0m
+{"time":"2025-03-22 07:46:45,034", "level":"INFO", "module":"_internal", "message":"[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.90:5000"}
+{"time":"2025-03-22 07:46:45,034", "level":"INFO", "module":"_internal", "message":"[33mPress CTRL+C to quit[0m"}
+{"time":"2025-03-22 07:46:45,039", "level":"INFO", "module":"_internal", "message":" * Restarting with watchdog (inotify)"}
+{"time":"2025-03-22 07:46:45,134", "level":"WARNING", "module":"_internal", "message":" * Debugger is active!"}
+{"time":"2025-03-22 07:46:45,140", "level":"INFO", "module":"_internal", "message":" * Debugger PIN: 133-596-301"}
