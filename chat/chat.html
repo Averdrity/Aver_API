@@ -51,21 +51,25 @@
   <!-- Footer -->
   <div id="footer"></div>
 
-  <!-- Login Modal -->
+  <!-- 💬 LOGIN MODAL -->
   <div id="loginModal" class="modal hidden">
-    <div class="modal-content">
+    <div class="modal-content modal-box">
+      <button class="modal-close-btn" onclick="closeAllModals()">×</button>
       <h2>Login</h2>
       <input type="text" id="loginUsername" placeholder="Username">
       <input type="password" id="loginPassword" placeholder="Password">
-      <label><input type="checkbox" id="rememberMe"> Remember Me</label>
+      <label class="remember-label">
+        <input type="checkbox" id="rememberMe"> Remember Me
+      </label>
       <button id="loginSubmit">Login</button>
       <p id="loginError" class="modal-error"></p>
     </div>
   </div>
 
-  <!-- Register Modal -->
+  <!-- 🆕 REGISTER MODAL -->
   <div id="registerModal" class="modal hidden">
-    <div class="modal-content">
+    <div class="modal-content modal-box">
+      <button class="modal-close-btn" onclick="closeAllModals()">×</button>
       <h2>Register</h2>
       <input type="text" id="registerUsername" placeholder="Username">
       <input type="password" id="registerPassword" placeholder="Password">
@@ -75,9 +79,10 @@
     </div>
   </div>
 
-  <!-- Profile Modal -->
+  <!-- 👤 PROFILE MODAL -->
   <div id="profileModal" class="modal hidden">
-    <div class="modal-content">
+    <div class="modal-content modal-box">
+      <button class="modal-close-btn" onclick="closeAllModals()">×</button>
       <h2>Your Profile</h2>
       <input type="text" id="profileName" placeholder="Full Name">
       <input type="text" id="profileCountry" placeholder="Country">
@@ -91,6 +96,19 @@
       <p id="profileMessage" class="modal-error"></p>
     </div>
   </div>
+
+    <!-- 📛 Modal JS Close Fallback -->
+  <script>
+    // Ensure all modals are hidden on initial load
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+    });
+
+    // Global modal close function
+    function closeAllModals() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+    }
+  </script>
 
   <!-- JS Modules -->
   <script type="module" src="/js/header.js"></script>

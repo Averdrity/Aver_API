@@ -9,33 +9,35 @@
   <script type="module" src="/js/authentication.js"></script>
 </head>
 
-<body>
+<body class="fadeInUp">
 
   <!-- 🌐 Dynamic Floating Header -->
   <div id="header"></div>
 
-  <!-- 🎯 Dynamic Landing Content -->
+  <!-- 🎯 Dynamic Landing Page Content -->
   <main id="landing-content" class="centered animated fadeInUp"></main>
 
-  <!-- 📥 Dynamic Footer -->
+  <!-- 📥 Dynamic Footer with Theme Toggle -->
   <div id="footer"></div>
 
-  <!-- 💬 Login Modal -->
+  <!-- 💬 LOGIN MODAL -->
   <div id="loginModal" class="modal hidden">
-    <div class="modal-content">
+    <div class="modal-content modal-box">
       <button class="modal-close-btn" onclick="closeAllModals()">×</button>
       <h2>Login</h2>
       <input type="text" id="loginUsername" placeholder="Username">
       <input type="password" id="loginPassword" placeholder="Password">
-      <label><input type="checkbox" id="rememberMe"> Remember Me</label>
+      <label class="remember-label">
+        <input type="checkbox" id="rememberMe"> Remember Me
+      </label>
       <button id="loginSubmit">Login</button>
       <p id="loginError" class="modal-error"></p>
     </div>
   </div>
 
-  <!-- 🆕 Register Modal -->
+  <!-- 🆕 REGISTER MODAL -->
   <div id="registerModal" class="modal hidden">
-    <div class="modal-content">
+    <div class="modal-content modal-box">
       <button class="modal-close-btn" onclick="closeAllModals()">×</button>
       <h2>Register</h2>
       <input type="text" id="registerUsername" placeholder="Username">
@@ -46,9 +48,9 @@
     </div>
   </div>
 
-  <!-- 👤 Profile Modal -->
+  <!-- 👤 PROFILE MODAL -->
   <div id="profileModal" class="modal hidden">
-    <div class="modal-content">
+    <div class="modal-content modal-box">
       <button class="modal-close-btn" onclick="closeAllModals()">×</button>
       <h2>Your Profile</h2>
       <input type="text" id="profileName" placeholder="Full Name">
@@ -64,8 +66,9 @@
     </div>
   </div>
 
-  <!-- ✅ Ensure modals hidden on load -->
+  <!-- 📛 Modal JS Close Fallback -->
   <script>
+    // Ensure all modals are hidden on initial load
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
     });
