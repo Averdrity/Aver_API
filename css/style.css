@@ -1,89 +1,154 @@
-/* ========================================
- *   🚀 Aver-Web Final Style.css (Part 1/3)
- *   ======================================== */
-
-/* CSS RESET & GLOBAL */
+/* =================== 🌙 GLOBAL RESET & THEME =================== */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-
-body, html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+html, body {
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
     line-height: 1.6;
     scroll-behavior: smooth;
-    background: var(--body-bg);
-    color: var(--text-color);
 }
 
-/* Scrollbar Styles */
-::-webkit-scrollbar {
-    width: 10px;
+/* =================== 🌈 THEME VARIABLES =================== */
+:root {
+    --radius: 14px;
+    --shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    --font-size-base: 15px;
 }
-::-webkit-scrollbar-track {
-    background: var(--scrollbar-track);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb);
-    border-radius: 5px;
-}
-
-/* Global Link Style */
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* BUTTONS */
-button {
-    cursor: pointer;
-    border: none;
-    outline: none;
-}
-
-/* INPUTS */
-input, textarea {
-    padding: 8px;
-    border-radius: var(--radius);
-    border: 1px solid var(--input-border);
-    background: var(--input-bg);
-    color: var(--text-color);
-}
-
-/* GLOBAL VARIABLES (Dark Theme Default) */
 :root[data-theme="dark"] {
-    --body-bg: #181818;
+    --bg-color: #181818;
     --text-color: #f0f0f0;
-    --text-muted: #aaa;
+    --muted-text: #999;
     --card-bg: #232323;
-    --shadow: 0 4px 10px rgba(0,0,0,0.4);
-    --radius: 12px;
-    --scrollbar-track: #1c1c1c;
-    --scrollbar-thumb: #333;
-    --input-border: #444;
     --input-bg: #2a2a2a;
+    --border-color: #444;
+    --scroll-track: #1c1c1c;
+    --scroll-thumb: #444;
+    --accent: #00d2ff;
 }
-
-/* LIGHT THEME VARIABLES */
 :root[data-theme="light"] {
-    --body-bg: #f4f4f4;
-    --text-color: #222;
-    --text-muted: #666;
-    --card-bg: #ffffff;
-    --shadow: 0 4px 10px rgba(0,0,0,0.1);
-    --radius: 12px;
-    --scrollbar-track: #ddd;
-    --scrollbar-thumb: #bbb;
-    --input-border: #ccc;
-    --input-bg: #fafafa;
+    --bg-color: #f8f8f8;
+    --text-color: #111;
+    --muted-text: #666;
+    --card-bg: #fff;
+    --input-bg: #eee;
+    --border-color: #ccc;
+    --scroll-track: #ccc;
+    --scroll-thumb: #999;
+    --accent: #007acc;
 }
 
-/* =========================================
- *   🚀 Aver-Web Final Style.css (Part 2/3)
- *   ========================================= */
+/* ================== 🌙 THEME SLIDER TOGGLE ================== */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
 
-/* ======== HEADER ======== */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #555;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider::before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+/* ON STATE */
+.toggle-switch input:checked + .slider {
+    background-color: #00d2ff;
+}
+
+.toggle-switch input:checked + .slider::before {
+    transform: translateX(24px);
+}
+
+
+/* =================== 🖱️ SCROLLBAR =================== */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--scroll-track); }
+::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 10px;
+}
+
+/* =================== 🧠 BASE UI ELEMENTS =================== */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+input, textarea {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: var(--radius);
+    padding: 10px;
+}
+button {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+button:hover {
+    background: var(--scroll-thumb);
+    transform: scale(1.05);
+}
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =================== 💡 UTILITIES =================== */
+.hidden { display: none; }
+.text-muted { color: var(--muted-text); }
+.centered { text-align: center; }
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseThinking {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* =================== 📌 HEADER =================== */
 .floating-header {
     position: fixed;
     top: 0;
@@ -92,18 +157,23 @@ input, textarea {
     background: var(--card-bg);
     box-shadow: var(--shadow);
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     padding: 12px 20px;
     z-index: 1000;
 }
-
+.header-logo img {
+    height: 48px;
+    animation: logo-spin 8s linear infinite;
+}
+@keyframes logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 .header-btn-group {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
-
 .header-btn {
     padding: 8px 14px;
     background: transparent;
@@ -111,213 +181,53 @@ input, textarea {
     border-radius: var(--radius);
     transition: background 0.3s ease;
 }
-
 .header-btn:hover {
     background: var(--input-bg);
 }
-
 .header-btn.soon {
-    cursor: default;
-    opacity: 0.5;
+    opacity: 0.4;
+    pointer-events: none;
 }
 
-.header-logo img {
-    height: 48px;
-    animation: logo-spin 5s linear infinite;
-}
-
-@keyframes logo-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* ======== FOOTER ======== */
+/* =================== 📎 FOOTER =================== */
 .site-footer {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     background: var(--card-bg);
-    box-shadow: var(--shadow);
+    color: var(--muted-text);
     padding: 10px 20px;
+    box-shadow: var(--shadow);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--text-muted);
     z-index: 900;
 }
 
-.footer-content {
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* ======== THEME TOGGLE ======== */
-.theme-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.theme-toggle input[type="checkbox"] {
-    appearance: none;
-    width: 40px;
-    height: 20px;
-    background: var(--input-bg);
-    border-radius: 20px;
-    position: relative;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.theme-toggle input[type="checkbox"]::before {
-    content: '';
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    top: 2px;
-    left: 2px;
-    background: var(--text-color);
-    border-radius: 50%;
-    transition: transform 0.3s ease;
-}
-
-.theme-toggle input[type="checkbox"]:checked::before {
-    transform: translateX(20px);
-}
-
-/* ======== MODALS ======== */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1100;
-}
-
-.modal.hidden {
-    display: none;
-}
-
-.modal-content {
-    background: var(--card-bg);
-    padding: 25px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    width: 340px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    animation: modalIn 0.3s ease;
-}
-
-@keyframes modalIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.modal-content h2 {
-    text-align: center;
-    margin-bottom: 10px;
-    color: var(--text-color);
-}
-
-.modal-content input, .modal-content textarea {
-    padding: 10px;
-    border-radius: var(--radius);
-    border: 1px solid var(--input-border);
-    background: var(--input-bg);
-    color: var(--text-color);
-}
-
-.modal-content button {
-    padding: 10px;
-    border-radius: var(--radius);
-    background: var(--input-bg);
-    color: var(--text-color);
-    transition: background 0.3s ease;
-}
-
-.modal-content button:hover {
-    background: var(--scrollbar-thumb);
-}
-
-.modal-error {
-    color: #ff5c5c;
-    font-size: 0.9rem;
-    text-align: center;
-    margin-top: 5px;
-}
-
-/* =========================================
- *   🚀 Aver-Web Final Style.css (Part 3/3)
- *   ========================================= */
-
-/* ======== LANDING PAGE ======== */
-.hero {
-    margin-top: 100px;
-    text-align: center;
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.welcome-box {
-    background: var(--card-bg);
-    padding: 35px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    max-width: 650px;
-    width: 100%;
-}
-
-.welcome-box h1 {
-    color: var(--text-color);
-    font-size: 2.8rem;
-    margin-bottom: 15px;
-}
-
-.welcome-box p {
-    color: var(--text-muted);
-    font-size: 1.2rem;
-}
-
-/* Info Slider Placeholder */
-.info-sliders {
-    margin: 40px auto 80px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
-.slider.placeholder {
-    width: 280px;
-    background: var(--card-bg);
-    padding: 20px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    color: var(--text-muted);
-    text-align: center;
-    font-size: 1rem;
-}
-
-/* ======== CHAT UI ======== */
+/* =================== 🖼️ MAIN LAYOUT =================== */
 #chat-container {
 display: flex;
 margin-top: 80px;
 height: calc(100vh - 140px);
 padding-bottom: 60px;
 }
+#chat-main {
+flex: 1;
+display: flex;
+flex-direction: column;
+padding: 16px;
+}
+.chat-messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
 
+/* =================== 📚 SIDEBARS =================== */
 #chat-history, #memory-sidebar {
 width: 280px;
 background: var(--card-bg);
@@ -325,86 +235,377 @@ box-shadow: var(--shadow);
 padding: 15px;
 overflow-y: auto;
 }
-
-#chat-main {
-flex: 1;
-display: flex;
-flex-direction: column;
-padding: 15px;
+.chat-search {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: var(--radius);
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: none;
 }
-
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.new-chat-btn {
+    background: var(--accent);
+    color: #000;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-weight: bold;
     margin-bottom: 10px;
 }
+.chat-history h4 {
+    margin-top: 20px;
+    font-size: 16px;
+    color: var(--text-muted);
+}
 
-/* Chat Sidebar Styles */
-.chat-item {
-    padding: 10px;
-    margin-bottom: 5px;
+/* =================== 📄 CHAT HISTORY CARDS =================== */
+.chat-card {
     background: var(--input-bg);
+    padding: 10px 12px;
+    margin-bottom: 8px;
     border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s ease;
+}
+.chat-title {
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 500;
+    flex-grow: 1;
+    padding-right: 10px;
+}
+.chat-card:hover {
+    background: var(--scroll-thumb);
+}
+.chat-dropdown-wrapper {
+    position: relative;
+}
+.chat-dropdown-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 20px;
     cursor: pointer;
-    transition: background 0.3s;
+    padding: 0 4px;
+}
+.chat-dropdown-menu {
+    position: absolute;
+    top: 28px;
+    right: 0;
+    background: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    z-index: 1000;
+}
+.chat-dropdown-menu.hidden {
+    display: none;
+}
+.chat-dropdown-menu .dropdown-item {
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #eee;
+    cursor: pointer;
+    border-bottom: 1px solid #333;
+    transition: background 0.2s ease;
+}
+.chat-dropdown-menu .dropdown-item:last-child {
+    border-bottom: none;
+}
+.chat-dropdown-menu .dropdown-item:hover {
+    background: #333;
 }
 
-.chat-item:hover {
-    background: var(--scrollbar-thumb);
-}
-
-/* Message Bubble */
+/* =================== 💬 MESSAGE BUBBLES =================== */
 .message-bubble {
     padding: 12px;
     margin-bottom: 8px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     max-width: 75%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
-
 .message-user {
     align-self: flex-end;
-    background-color: #4a90e2;
+    background: #4a90e2;
     color: white;
 }
-
 .message-ai {
     align-self: flex-start;
-    background-color: var(--card-bg);
+    background: var(--card-bg);
     color: var(--text-color);
 }
+.message-bubble.thinking {
+    background: linear-gradient(90deg, #333 30%, #444 60%, #333 90%);
+    background-size: 200% 100%;
+    font-style: italic;
+    opacity: 0.8;
+    animation: pulseThinking 2s infinite linear;
+}
 
-/* Chatbox Input */
-#chatboxContainer textarea {
+/* ======================= 💬 CHATBOX CONTAINER ======================= */
+#chatboxContainer {
 width: 100%;
-min-height: 60px;
+padding: 8px 0;
+}
+
+.chatbox-modal {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: fadeInUp 0.4s ease;
+}
+
+/* ======================= 🔡 CHATBOX INPUT ======================= */
+#chatboxInput {
+width: 100%;
 padding: 10px;
+min-height: 60px;
+max-height: 240px;
 resize: none;
+overflow-y: auto;
 border-radius: var(--radius);
 background: var(--input-bg);
 color: var(--text-color);
 border: none;
 box-shadow: var(--shadow);
+line-height: 1.5;
+font-size: 15px;
+transition: height 0.2s ease;
 }
 
-#chatboxContainer button {
-margin-top: 8px;
-padding: 10px 15px;
+#chatboxInput:focus {
+outline: none;
+border: 1px solid var(--scrollbar-thumb);
+}
+
+/* Auto-expanding behavior */
+#chatboxInput::-webkit-scrollbar {
+width: 6px;
+}
+#chatboxInput::-webkit-scrollbar-thumb {
+background: var(--scrollbar-thumb);
+border-radius: 6px;
+}
+
+/* ======================= ✍️ CHARACTER COUNTER ======================= */
+#charCounter {
+font-size: 12px;
+color: var(--text-muted);
+margin-right: 12px;
+padding-top: 4px;
+}
+
+/* ======================= 🚀 SEND BUTTON ======================= */
+#chatboxSendBtn {
 background: var(--card-bg);
 color: var(--text-color);
+border: none;
+padding: 8px 14px;
+font-size: 14px;
 border-radius: var(--radius);
 box-shadow: var(--shadow);
-transition: background 0.3s;
+transition: background 0.3s ease, transform 0.2s ease;
+display: flex;
+align-items: center;
+gap: 6px;
+cursor: pointer;
 }
 
-#chatboxContainer button:hover {
+#chatboxSendBtn:hover {
 background: var(--scrollbar-thumb);
+transform: scale(1.05);
 }
 
-/* ======== MEMORY SIDEBAR ======== */
+#chatboxSendBtn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+#chatboxSendBtn .send-loading {
+font-style: italic;
+animation: blink 1.2s infinite;
+}
+
+#chatboxSendBtn .hidden {
+display: none;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* ======================= 🎛️ CHATBOX TOOLBAR ======================= */
+.chat-toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.chat-toolbar button {
+    background: #2b2b2b;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    position: relative;
+}
+
+.chat-toolbar button:hover {
+    background: #444;
+}
+
+/* ======================= 🧠 TOOLBAR TOOLTIPS ======================= */
+.chat-toolbar button::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 999;
+}
+.chat-toolbar button:hover::after {
+    opacity: 1;
+    bottom: 145%;
+}
+
+/* ======================= 📦 AI MARKDOWN STYLING ======================= */
+.message-ai h1,
+.message-ai h2,
+.message-ai h3,
+.message-ai h4,
+.message-ai h5 {
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 6px;
+}
+
+.message-ai ul,
+.message-ai ol {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.message-ai li {
+    margin-bottom: 5px;
+    line-height: 1.6em;
+}
+
+.message-ai p {
+    margin-bottom: 12px;
+}
+
+.message-ai strong {
+    font-weight: bold;
+    color: #fff;
+}
+
+.message-ai em {
+    font-style: italic;
+    color: #ccc;
+}
+
+.message-ai a {
+    color: #00d2ff;
+    text-decoration: underline;
+}
+
+.message-ai blockquote {
+    background: #2a2a2a;
+    padding: 10px 15px;
+    border-left: 4px solid #00d2ff;
+    margin: 10px 0;
+    border-radius: 8px;
+    color: #ccc;
+}
+
+.message-ai br {
+    line-height: 1.4em;
+}
+
+/* ======================= 📋 INLINE CODE & CODE BLOCKS ======================= */
+.message-ai code {
+    background: #2e2e2e;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.95em;
+    color: #ffcc66;
+}
+
+.message-ai pre {
+    background: #1e1e1e;
+    padding: 12px 16px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin-top: 10px;
+    position: relative;
+    font-size: 0.95em;
+    font-family: 'Fira Code', monospace;
+    line-height: 1.6;
+    color: #eee;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Optional: Language label on top-right */
+.message-ai pre::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 11px;
+    color: #aaa;
+    background: #333;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+/* ======================= 🔘 COPY & EDIT BUTTONS FOR CODE BLOCKS ======================= */
+.code-buttons {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+}
+
+.code-buttons button {
+    background: #2a2a2a;
+    color: #ccc;
+    border: none;
+    padding: 3px 7px;
+    font-size: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.code-buttons button:hover {
+    background: #444;
+}
+
+/* ======================= 🧠 MEMORY SIDEBAR ======================= */
 .memory-card {
     background: var(--input-bg);
     border-radius: var(--radius);
@@ -417,17 +618,20 @@ background: var(--scrollbar-thumb);
 }
 
 .memory-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
 }
 
 .memory-card .memory-title {
     font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 6px;
     color: var(--text-color);
 }
 
 .memory-card .memory-tag {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
+    margin-bottom: 4px;
 }
 
 .memory-card .memory-date {
@@ -448,33 +652,10 @@ background: var(--scrollbar-thumb);
     cursor: pointer;
 }
 
-/* ======== ANIMATIONS ======== */
-.animated {
-    animation-duration: 1s;
-    animation-fill-mode: both;
-}
-
-.fadeInDown {
-    animation-name: fadeInDown;
-}
-
-.fadeInUp {
-    animation-name: fadeInUp;
-}
-
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsive Layout Adjustments */
+/* ======================= 📱 RESPONSIVE FIXES ======================= */
 @media (max-width: 900px) {
-    #chat-history, #memory-sidebar {
+    #chat-history,
+    #memory-sidebar {
     display: none;
     }
 
@@ -482,16 +663,44 @@ background: var(--scrollbar-thumb);
     width: 100%;
     }
 
-    .floating-header, .site-footer {
+    .floating-header,
+    .site-footer {
         flex-direction: column;
         gap: 8px;
     }
 
-    .header-btn-group, .footer-content {
-        justify-content: center;
-    }
-
-    .welcome-box, .slider.placeholder {
+    .welcome-box,
+    .slider.placeholder {
         width: 90%;
     }
+}
+
+/* ======================= ✨ ANIMATIONS ======================= */
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.fadeInUp {
+    animation-name: fadeInUp;
+}
+
+.fadeInDown {
+    animation-name: fadeInDown;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-20px); }
+    10%, 90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
 }

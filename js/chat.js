@@ -1,9 +1,8 @@
 // =======================================================
-// 🚀 chat.js | Final Version (Fully Enhanced & Optimized)
+// 🚀 chat.js | Final Version (Token Stream + Markdown + Live Sidebar)
 // =======================================================
-// Handles full chat functionalities:
-// AJAX memory/chat loading, sending messages, dynamic UI
-// =======================================================
+
+let currentChatId = null;
 
 import { initChatboxModal } from './chatbox-modal.js';
 
@@ -11,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMemories();
     loadChatHistory();
     initChatboxModal(sendMessageToServer);
+
+    const newBtn = document.getElementById('newChatBtn');
+    if (newBtn) newBtn.addEventListener('click', startNewChatSession);
 });
 
 // =================== AJAX Load Memories ===================
@@ -18,20 +20,16 @@ async function loadMemories() {
     try {
         const res = await fetch('/backend/ajax/ajax_memory_handler.php?action=getMemories');
         const data = await res.json();
-        if (data.success && data.memories) {
-            renderMemories(data.memories);
-        } else {
-            console.warn('No memories or load issue:', data.message);
-        }
+        if (data.success && data.memories) renderMemories(data.memories);
+        else console.warn('No memories or load issue:', data.message || 'Unknown error');
     } catch (error) {
         console.error('Memory fetch failed:', error);
     }
 }
 
 function renderMemories(memories) {
-    const memorySidebar = document.getElementById('memory-sidebar');
-    memorySidebar.innerHTML = ''; // clear first
-
+    const sidebar = document.getElementById('memory-sidebar');
+    sidebar.innerHTML = '';
     memories.forEach(memory => {
         const card = document.createElement('div');
         card.classList.add('memory-card');
@@ -41,81 +39,296 @@ function renderMemories(memories) {
         <div class="memory-date">${memory.created_at}</div>
         <button class="memory-delete">Delete</button>
         `;
-        memorySidebar.appendChild(card);
-
         card.querySelector('.memory-delete').onclick = () => deleteMemory(memory.id);
+        sidebar.appendChild(card);
     });
 }
 
-async function deleteMemory(memoryId) {
-    if (!confirm('Are you sure you want to delete this memory?')) return;
-
+async function deleteMemory(id) {
+    if (!confirm('Delete this memory?')) return;
     try {
         const res = await fetch('/backend/ajax/ajax_memory_handler.php?action=deleteMemory', {
             method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ memoryId })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ memoryId: id })
         });
         const data = await res.json();
         if (data.success) loadMemories();
-        else console.error('Deletion failed:', data.message);
-    } catch (error) {
-        console.error('Memory deletion error:', error);
+        else console.error('Memory deletion failed:', data.message);
+    } catch (err) {
+        console.error('Memory deletion error:', err);
     }
 }
 
-// =================== AJAX Load Chats ===================
+// =================== Load Chat History ===================
 async function loadChatHistory() {
     try {
         const res = await fetch('/backend/ajax/ajax_chat_handler.php?action=getChats');
         const data = await res.json();
         if (data.success && data.chats) {
-            renderChatHistory(data.chats);
-        } else {
-            console.warn('No chats or load issue:', data.message);
+            const grouped = categorizeChatsByDate(data.chats);
+            renderChatHistory(grouped);
         }
-    } catch (error) {
-        console.error('Chat history fetch failed:', error);
+    } catch (err) {
+        console.error('Chat history error:', err);
     }
 }
 
-function renderChatHistory(chats) {
-    const chatHistory = document.getElementById('chat-history');
-    chatHistory.innerHTML = '';
+function categorizeChatsByDate(chats) {
+    const groups = { "Today": [], "Yesterday": [], "Previous 7 Days": [], "Previous 30 Days": [], "Earlier": {} };
+    const now = new Date();
 
     chats.forEach(chat => {
-        const chatItem = document.createElement('div');
-        chatItem.classList.add('chat-item');
-        chatItem.textContent = chat.title;
-        chatHistory.appendChild(chatItem);
+        const created = new Date(chat.created_at);
+        const daysDiff = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+        const label = created.toLocaleDateString();
+
+        if (daysDiff === 0) groups["Today"].push(chat);
+        else if (daysDiff === 1) groups["Yesterday"].push(chat);
+        else if (daysDiff <= 7) groups["Previous 7 Days"].push(chat);
+        else if (daysDiff <= 30) groups["Previous 30 Days"].push(chat);
+        else {
+            if (!groups["Earlier"][label]) groups["Earlier"][label] = [];
+            groups["Earlier"][label].push(chat);
+        }
+    });
+    return groups;
+}
+
+function renderChatHistory(groups) {
+    const container = document.getElementById('chat-history');
+    container.innerHTML = '';
+
+    const search = document.createElement('input');
+    search.type = 'text';
+    search.placeholder = 'Search chats...';
+    search.className = 'chat-search';
+    search.addEventListener('input', () => filterChatCards(search.value));
+    container.appendChild(search);
+
+    const newBtn = document.createElement('button');
+    newBtn.className = 'new-chat-btn';
+    newBtn.textContent = '➕ New Chat';
+    newBtn.onclick = startNewChatSession;
+    container.appendChild(newBtn);
+
+    for (const group in groups) {
+        const title = document.createElement('h4');
+        title.textContent = group;
+        container.appendChild(title);
+
+        const chats = Array.isArray(groups[group]) ? groups[group] : Object.values(groups[group]).flat();
+        chats.forEach(chat => {
+            const card = renderChatCard(chat);
+            container.appendChild(card);
+        });
+    }
+}
+
+// ================= Render Chat Cards =================
+function renderChatCard(chat) {
+    const card = document.createElement('div');
+    card.className = 'chat-card';
+
+    const title = document.createElement('div');
+    title.className = 'chat-title';
+    title.textContent = chat.title;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'chat-dropdown-wrapper';
+
+    const btn = document.createElement('button');
+    btn.className = 'chat-dropdown-btn';
+    btn.innerHTML = '&#8942;';
+
+    const menu = document.createElement('div');
+    menu.className = 'chat-dropdown-menu hidden';
+    menu.innerHTML = `
+    <div class="dropdown-item" onclick="loadChat(${chat.id})">📂 Load Chat</div>
+    <div class="dropdown-item" onclick="renameChat(${chat.id})">✏️ Edit Title</div>
+    <div class="dropdown-item" onclick="deleteChat(${chat.id})">❌ Delete</div>
+    `;
+
+    btn.onclick = e => {
+        e.stopPropagation();
+        closeAllDropdowns();
+        menu.classList.toggle('hidden');
+    };
+
+    document.addEventListener('click', e => {
+        if (!wrapper.contains(e.target)) menu.classList.add('hidden');
+    });
+
+        wrapper.appendChild(btn);
+        wrapper.appendChild(menu);
+        card.appendChild(title);
+        card.appendChild(wrapper);
+        return card;
+}
+
+// ================= Chat Actions =================
+window.loadChat = async function(chatId) {
+    try {
+        const res = await fetch(`/backend/ajax/ajax_chat_handler.php?action=loadChat&chatId=${chatId}`);
+        const data = await res.json();
+        if (data.success) {
+            currentChatId = chatId;
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = '';
+            data.messages.forEach(m => displayMessage(m.sender, m.content));
+        }
+    } catch (err) {
+        console.error('Load chat error:', err);
+    }
+};
+
+window.renameChat = async function(chatId) {
+    const newTitle = prompt('Enter new title:');
+    if (!newTitle) return;
+    try {
+        const res = await fetch('/backend/ajax/ajax_chat_handler.php?action=renameChat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chatId, newTitle })
+        });
+        const data = await res.json();
+        if (data.success) loadChatHistory();
+    } catch (err) {
+        console.error('Rename chat error:', err);
+    }
+};
+
+window.deleteChat = async function(chatId) {
+    if (!confirm('Delete this chat?')) return;
+    try {
+        const res = await fetch('/backend/ajax/ajax_chat_handler.php?action=deleteChat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chatId })
+        });
+        const data = await res.json();
+        if (data.success) loadChatHistory();
+    } catch (err) {
+        console.error('Delete chat error:', err);
+    }
+};
+
+// ================= New Chat Session =================
+function startNewChatSession() {
+    currentChatId = null;
+    document.getElementById('chatMessages').innerHTML = '';
+    const input = document.getElementById('chatboxInput');
+    if (input) input.value = '';
+
+    fetch('/backend/ajax/ajax_chat_handler.php?action=resetChatSession')
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) createNewChatPrompt();
     });
 }
 
-// =================== Send Messages ===================
+function createNewChatPrompt() {
+    const box = document.createElement('div');
+    box.className = 'new-chat-popup';
+    box.textContent = '🆕 New chat session started';
+    document.body.appendChild(box);
+    setTimeout(() => box.remove(), 3000);
+}
+
+// ================= Message Handling =================
 async function sendMessageToServer(message) {
     displayMessage('user', message);
+
+    const chatBox = document.getElementById('chatMessages');
+    const thinkingBubble = document.createElement('div');
+    thinkingBubble.className = 'message-bubble message-ai';
+    thinkingBubble.textContent = '🤖 AI is thinking...';
+    chatBox.appendChild(thinkingBubble);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
     try {
         const res = await fetch('/backend/ajax/ajax_chat_handler.php?action=sendMessage', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message })
+            body: JSON.stringify({ message, chatId: currentChatId })
         });
+
         const data = await res.json();
+        thinkingBubble.remove();
+
         if (data.success && data.response) {
-            displayMessage('ai', data.response);
+            displayMessageTokenByToken('ai', data.response);
+            if (data.chatId) {
+                currentChatId = data.chatId;
+                loadChatHistory();
+            }
         } else {
             console.error('Message send failed:', data.message);
         }
     } catch (error) {
-        console.error('Error sending message:', error);
+        thinkingBubble.remove();
+        console.error('Send error:', error);
     }
 }
 
 function displayMessage(sender, message) {
     const chatMessages = document.getElementById('chatMessages');
+    const bubble = document.createElement('div');
+    bubble.className = `message-bubble ${sender === 'user' ? 'message-user' : 'message-ai'}`;
+    if (sender === 'ai') {
+        bubble.innerHTML = marked.parse(message);
+    } else {
+        bubble.textContent = message;
+    }
+    chatMessages.appendChild(bubble);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function displayMessageTokenByToken(sender, fullText) {
+    const chatMessages = document.getElementById('chatMessages');
     const msgBubble = document.createElement('div');
-    msgBubble.classList.add('message-bubble', sender === 'user' ? 'message-user' : 'message-ai');
-    msgBubble.textContent = message;
+    msgBubble.className = `message-bubble ${sender === 'user' ? 'message-user' : 'message-ai'}`;
     chatMessages.appendChild(msgBubble);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    let buffer = '';
+    let index = 0;
+    const typingSpeed = 20; // milliseconds per char
+    const markdownRefreshRate = 3; // Re-parse every 3 characters for smoother rendering
+
+    const renderMarkdown = () => {
+        msgBubble.innerHTML = marked.parse(buffer);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    function typeNextChar() {
+        if (index < fullText.length) {
+            buffer += fullText[index];
+            index++;
+
+            // Update markdown-rendered HTML every N characters
+            if (index % markdownRefreshRate === 0 || index === fullText.length) {
+                renderMarkdown();
+            }
+
+            setTimeout(typeNextChar, typingSpeed);
+        }
+    }
+
+    typeNextChar();
+}
+
+
+
+// ================= Utilities =================
+function closeAllDropdowns() {
+    document.querySelectorAll('.chat-dropdown-menu').forEach(menu => menu.classList.add('hidden'));
+}
+
+function filterChatCards(term) {
+    const cards = document.querySelectorAll('.chat-card');
+    cards.forEach(card => {
+        const title = card.querySelector('.chat-title').textContent.toLowerCase();
+        card.style.display = title.includes(term.toLowerCase()) ? '' : 'none';
+    });
 }
