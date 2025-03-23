@@ -1,4 +1,8 @@
-/* =================== 🌙 GLOBAL RESET & THEME =================== */
+/* ===========================================
+ * 🚀 Aver-Web | Final style.css (Part 1 of 4)
+ * =========================================== */
+
+/* Reset & Base */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -10,12 +14,13 @@ html, body {
     color: var(--text-color);
     line-height: 1.6;
     scroll-behavior: smooth;
+    font-size: var(--font-size-base);
 }
 
-/* =================== 🌈 THEME VARIABLES =================== */
+/* Theme Variables */
 :root {
     --radius: 14px;
-    --shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    --shadow: 0 4px 10px rgba(0,0,0,0.4);
     --font-size-base: 15px;
 }
 :root[data-theme="dark"] {
@@ -41,62 +46,7 @@ html, body {
     --accent: #007acc;
 }
 
-/* ================== 🌙 THEME SLIDER TOGGLE ================== */
-.theme-toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-}
-
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 26px;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #555;
-    transition: 0.4s;
-    border-radius: 34px;
-}
-
-.slider::before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
-}
-
-/* ON STATE */
-.toggle-switch input:checked + .slider {
-    background-color: #00d2ff;
-}
-
-.toggle-switch input:checked + .slider::before {
-    transform: translateX(24px);
-}
-
-
-/* =================== 🖱️ SCROLLBAR =================== */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--scroll-track); }
 ::-webkit-scrollbar-thumb {
@@ -104,10 +54,10 @@ html, body {
     border-radius: 10px;
 }
 
-/* =================== 🧠 BASE UI ELEMENTS =================== */
+/* Base Elements */
 a {
-    color: inherit;
     text-decoration: none;
+    color: inherit;
 }
 input, textarea {
     background: var(--input-bg);
@@ -121,8 +71,8 @@ button {
     color: var(--text-color);
     border: none;
     border-radius: var(--radius);
-    cursor: pointer;
     box-shadow: var(--shadow);
+    cursor: pointer;
     transition: background 0.3s ease, transform 0.2s ease;
 }
 button:hover {
@@ -133,84 +83,81 @@ button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
-
-/* =================== 💡 UTILITIES =================== */
 .hidden { display: none; }
 .text-muted { color: var(--muted-text); }
-.centered { text-align: center; }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulseThinking {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
-}
-
-/* =================== 📌 HEADER =================== */
+/* Header */
 .floating-header {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     background: var(--card-bg);
     box-shadow: var(--shadow);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
+    justify-content: space-between;
+    padding: 10px 20px;
     z-index: 1000;
-}
-.header-logo img {
-    height: 48px;
-    animation: logo-spin 8s linear infinite;
-}
-@keyframes logo-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    border-radius: 0 0 var(--radius) var(--radius);
 }
 .header-btn-group {
     display: flex;
     gap: 12px;
 }
 .header-btn {
-    padding: 8px 14px;
-    background: transparent;
+    padding: 10px 16px;
+    background: #2c2c2c;
     color: var(--text-color);
     border-radius: var(--radius);
+    font-weight: 500;
     transition: background 0.3s ease;
 }
 .header-btn:hover {
-    background: var(--input-bg);
+    background: var(--scroll-thumb);
 }
 .header-btn.soon {
-    opacity: 0.4;
+    opacity: 0.5;
     pointer-events: none;
 }
+.header-logo img {
+    height: 48px;
+    animation: logo-pulse 2.5s infinite ease-in-out;
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+}
+@keyframes logo-pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 8px var(--accent); }
+    50% { transform: scale(1.08); box-shadow: 0 0 16px var(--accent); }
+}
 
-/* =================== 📎 FOOTER =================== */
+/* Footer */
 .site-footer {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     background: var(--card-bg);
+    padding: 12px 20px;
     color: var(--muted-text);
-    padding: 10px 20px;
-    box-shadow: var(--shadow);
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: var(--shadow);
     z-index: 900;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+.footer-content {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-/* =================== 🖼️ MAIN LAYOUT =================== */
+/* ====================== MAIN LAYOUT ====================== */
 #chat-container {
 display: flex;
 margin-top: 80px;
 height: calc(100vh - 140px);
 padding-bottom: 60px;
+overflow: hidden;
 }
 #chat-main {
 flex: 1;
@@ -218,46 +165,46 @@ display: flex;
 flex-direction: column;
 padding: 16px;
 }
-.chat-messages {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    overflow-y: auto;
-    padding-right: 6px;
-}
 
-/* =================== 📚 SIDEBARS =================== */
+/* ====================== SIDEBARS ====================== */
 #chat-history, #memory-sidebar {
 width: 280px;
 background: var(--card-bg);
 box-shadow: var(--shadow);
 padding: 15px;
 overflow-y: auto;
+border-radius: var(--radius);
+margin: 8px;
 }
 .chat-search {
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     border-radius: var(--radius);
     background: var(--input-bg);
-    color: var(--text-color);
     border: none;
+    color: var(--text-color);
+}
+.chat-history h4 {
+    font-size: 15px;
+    color: var(--muted-text);
+    margin-bottom: 8px;
+    margin-top: 16px;
 }
 .new-chat-btn {
     background: var(--accent);
     color: #000;
-    padding: 10px 14px;
+    padding: 8px 14px;
     border-radius: var(--radius);
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    width: 100%;
+    transition: background 0.2s ease;
 }
-.chat-history h4 {
-    margin-top: 20px;
-    font-size: 16px;
-    color: var(--text-muted);
+.new-chat-btn:hover {
+    background: #00c0e0;
 }
 
-/* =================== 📄 CHAT HISTORY CARDS =================== */
+/* ====================== CHAT HISTORY CARDS ====================== */
 .chat-card {
     background: var(--input-bg);
     padding: 10px 12px;
@@ -317,7 +264,82 @@ overflow-y: auto;
     background: #333;
 }
 
-/* =================== 💬 MESSAGE BUBBLES =================== */
+/* ====================== THEME SLIDER ====================== */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.theme-toggle label {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+.theme-slider-wrapper {
+    position: relative;
+    width: 48px;
+    height: 24px;
+    display: inline-block;
+}
+.theme-slider-wrapper input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.theme-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #444;
+    transition: 0.3s ease;
+    border-radius: 34px;
+}
+.theme-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--text-color);
+    transition: 0.3s ease;
+    border-radius: 50%;
+}
+.theme-slider-wrapper input:checked + .theme-slider {
+    background-color: var(--accent);
+}
+.theme-slider-wrapper input:checked + .theme-slider:before {
+    transform: translateX(24px);
+}
+
+/* ====================== ANIMATIONS ====================== */
+.animated { animation-duration: 1s; animation-fill-mode: both; }
+.fadeInUp { animation-name: fadeInUp; }
+.fadeInDown { animation-name: fadeInDown; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-20px); }
+    10%, 90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+}
+
+/* ====================== CHAT MESSAGES ====================== */
+.chat-messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+/* Message Bubbles */
 .message-bubble {
     padding: 12px;
     margin-bottom: 8px;
@@ -344,13 +366,16 @@ overflow-y: auto;
     opacity: 0.8;
     animation: pulseThinking 2s infinite linear;
 }
+@keyframes pulseThinking {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
 
-/* ======================= 💬 CHATBOX CONTAINER ======================= */
+/* ====================== CHATBOX MODAL ====================== */
 #chatboxContainer {
 width: 100%;
 padding: 8px 0;
 }
-
 .chatbox-modal {
     background: var(--card-bg);
     border-radius: var(--radius);
@@ -362,7 +387,7 @@ padding: 8px 0;
     animation: fadeInUp 0.4s ease;
 }
 
-/* ======================= 🔡 CHATBOX INPUT ======================= */
+/* Chat Input */
 #chatboxInput {
 width: 100%;
 padding: 10px;
@@ -379,13 +404,10 @@ line-height: 1.5;
 font-size: 15px;
 transition: height 0.2s ease;
 }
-
 #chatboxInput:focus {
 outline: none;
 border: 1px solid var(--scrollbar-thumb);
 }
-
-/* Auto-expanding behavior */
 #chatboxInput::-webkit-scrollbar {
 width: 6px;
 }
@@ -394,7 +416,7 @@ background: var(--scrollbar-thumb);
 border-radius: 6px;
 }
 
-/* ======================= ✍️ CHARACTER COUNTER ======================= */
+/* Character Counter */
 #charCounter {
 font-size: 12px;
 color: var(--text-muted);
@@ -402,7 +424,7 @@ margin-right: 12px;
 padding-top: 4px;
 }
 
-/* ======================= 🚀 SEND BUTTON ======================= */
+/* Send Button */
 #chatboxSendBtn {
 background: var(--card-bg);
 color: var(--text-color);
@@ -417,39 +439,33 @@ align-items: center;
 gap: 6px;
 cursor: pointer;
 }
-
 #chatboxSendBtn:hover {
 background: var(--scrollbar-thumb);
 transform: scale(1.05);
 }
-
 #chatboxSendBtn:disabled {
 opacity: 0.5;
 cursor: not-allowed;
 }
-
 #chatboxSendBtn .send-loading {
 font-style: italic;
 animation: blink 1.2s infinite;
 }
-
 #chatboxSendBtn .hidden {
 display: none;
 }
-
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
 }
 
-/* ======================= 🎛️ CHATBOX TOOLBAR ======================= */
+/* ====================== CHATBOX TOOLBAR ====================== */
 .chat-toolbar {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
     margin-bottom: 4px;
 }
-
 .chat-toolbar button {
     background: #2b2b2b;
     color: #fff;
@@ -461,12 +477,11 @@ display: none;
     transition: background 0.2s ease;
     position: relative;
 }
-
 .chat-toolbar button:hover {
     background: #444;
 }
 
-/* ======================= 🧠 TOOLBAR TOOLTIPS ======================= */
+/* Toolbar Tooltips */
 .chat-toolbar button::after {
     content: attr(title);
     position: absolute;
@@ -499,37 +514,30 @@ display: none;
     margin-top: 10px;
     margin-bottom: 6px;
 }
-
 .message-ai ul,
 .message-ai ol {
     padding-left: 20px;
     margin: 10px 0;
 }
-
 .message-ai li {
     margin-bottom: 5px;
     line-height: 1.6em;
 }
-
 .message-ai p {
     margin-bottom: 12px;
 }
-
 .message-ai strong {
     font-weight: bold;
     color: #fff;
 }
-
 .message-ai em {
     font-style: italic;
     color: #ccc;
 }
-
 .message-ai a {
     color: #00d2ff;
     text-decoration: underline;
 }
-
 .message-ai blockquote {
     background: #2a2a2a;
     padding: 10px 15px;
@@ -538,7 +546,6 @@ display: none;
     border-radius: 8px;
     color: #ccc;
 }
-
 .message-ai br {
     line-height: 1.4em;
 }
@@ -552,7 +559,6 @@ display: none;
     font-size: 0.95em;
     color: #ffcc66;
 }
-
 .message-ai pre {
     background: #1e1e1e;
     padding: 12px 16px;
@@ -567,8 +573,7 @@ display: none;
     white-space: pre-wrap;
     word-wrap: break-word;
 }
-
-/* Optional: Language label on top-right */
+/* Optional: Language label */
 .message-ai pre::before {
     content: attr(data-lang);
     position: absolute;
@@ -581,7 +586,7 @@ display: none;
     border-radius: 6px;
 }
 
-/* ======================= 🔘 COPY & EDIT BUTTONS FOR CODE BLOCKS ======================= */
+/* COPY & EDIT BUTTONS */
 .code-buttons {
     position: absolute;
     top: 6px;
@@ -589,7 +594,6 @@ display: none;
     display: flex;
     gap: 6px;
 }
-
 .code-buttons button {
     background: #2a2a2a;
     color: #ccc;
@@ -600,7 +604,6 @@ display: none;
     cursor: pointer;
     transition: background 0.2s ease;
 }
-
 .code-buttons button:hover {
     background: #444;
 }
@@ -616,24 +619,20 @@ display: none;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
-
 .memory-card:hover {
     transform: translateY(-3px);
 }
-
 .memory-card .memory-title {
     font-weight: bold;
     font-size: 1rem;
     margin-bottom: 6px;
     color: var(--text-color);
 }
-
 .memory-card .memory-tag {
     font-size: 0.85rem;
     color: var(--text-muted);
     margin-bottom: 4px;
 }
-
 .memory-card .memory-date {
     font-size: 0.8rem;
     color: var(--text-muted);
@@ -641,7 +640,6 @@ display: none;
     bottom: 8px;
     left: 10px;
 }
-
 .memory-card .memory-delete {
     position: absolute;
     bottom: 8px;
@@ -658,17 +656,14 @@ display: none;
     #memory-sidebar {
     display: none;
     }
-
     #chat-main {
     width: 100%;
     }
-
     .floating-header,
     .site-footer {
         flex-direction: column;
         gap: 8px;
     }
-
     .welcome-box,
     .slider.placeholder {
         width: 90%;
@@ -680,25 +675,20 @@ display: none;
     animation-duration: 1s;
     animation-fill-mode: both;
 }
-
 .fadeInUp {
     animation-name: fadeInUp;
 }
-
 .fadeInDown {
     animation-name: fadeInDown;
 }
-
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeInDown {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translateY(-20px); }
     10%, 90% { opacity: 1; transform: translateY(0); }

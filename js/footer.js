@@ -1,6 +1,6 @@
 // =====================================
-// 🌙 footer.js (v2.0)
-// Dynamic Footer & Theme Toggle
+// 🌙 footer.js (v3.0)
+// Dynamic Footer with Slider Theme Toggle
 // =====================================
 
 document.addEventListener('DOMContentLoaded', buildFooter);
@@ -12,33 +12,48 @@ function buildFooter() {
     <div class="footer-content">
     <span>© ${new Date().getFullYear()} Aver-Web. All rights reserved.</span>
     <div class="theme-toggle">
-    <label for="themeSwitch">Dark Mode</label>
-    <input type="checkbox" id="themeSwitch" checked>
+    <label class="theme-slider-label" for="themeToggleSlider">☀️ / 🌙 Switch</label>
+    <label class="theme-slider-wrapper">
+    <input type="checkbox" id="themeToggleSlider">
+    <span class="theme-slider"></span>
+    </label>
     </div>
     </div>
     </footer>
     `;
 
+    // Initialize theme toggle functionality
     initThemeToggle();
 }
 
-// Initialize Theme Toggle Functionality
+// =====================
+// Init Theme Toggle (Matches themeToggle.js)
+// =====================
 function initThemeToggle() {
-    const themeSwitch = document.getElementById('themeSwitch');
+    const toggleSwitch = document.getElementById("themeToggleSlider");
+    if (!toggleSwitch) return;
 
-    // Load theme preference from localStorage
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    themeSwitch.checked = currentTheme === 'dark';
+    // Load saved theme from localStorage or default to dark
+    const storedTheme = localStorage.getItem("theme") || "dark";
+    applyTheme(storedTheme);
+    toggleSwitch.checked = storedTheme === "light";
 
-    themeSwitch.addEventListener('change', (e) => {
-        if (e.target.checked) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-            localStorage.setItem('theme', 'light');
-        }
+    toggleSwitch.addEventListener("change", () => {
+        const selectedTheme = toggleSwitch.checked ? "light" : "dark";
+        applyTheme(selectedTheme);
+        localStorage.setItem("theme", selectedTheme);
     });
 }
 
+function applyTheme(theme) {
+    const html = document.documentElement;
+    html.setAttribute("data-theme", theme);
+
+    if (theme === "light") {
+        document.body.classList.add("light-mode");
+        document.body.classList.remove("dark-mode");
+    } else {
+        document.body.classList.add("dark-mode");
+        document.body.classList.remove("light-mode");
+    }
+}

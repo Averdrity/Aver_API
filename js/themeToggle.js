@@ -1,37 +1,34 @@
+// File: /js/themeToggle.js
+
 document.addEventListener("DOMContentLoaded", initThemeToggle);
 
 function initThemeToggle() {
-    updateToggleUI();
-}
-
-function updateToggleUI() {
-    const toggleSwitch = document.getElementById("themeSwitch");
-
+    const toggleSwitch = document.getElementById("themeToggleSlider");
     if (!toggleSwitch) return;
 
-    // Set the initial theme based on localStorage
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme === "light") {
-        document.body.classList.remove("dark-mode");
-        document.body.classList.add("light-mode");
-        toggleSwitch.checked = true;
-    } else {
-        document.body.classList.remove("light-mode");
-        document.body.classList.add("dark-mode");
-        toggleSwitch.checked = false;
-    }
+    // Apply stored theme or default to dark
+    const storedTheme = localStorage.getItem("theme") || "dark";
+    applyTheme(storedTheme);
+    toggleSwitch.checked = storedTheme === "light";
 
-    // Listen for toggle changes
+    // Listen for toggle change
     toggleSwitch.addEventListener("change", () => {
-        const mode = toggleSwitch.checked ? "light" : "dark";
-        localStorage.setItem("theme", mode);
-        if (mode === "light") {
-            document.body.classList.remove("dark-mode");
-            document.body.classList.add("light-mode");
-        } else {
-            document.body.classList.remove("light-mode");
-            document.body.classList.add("dark-mode");
-        }
+        const newTheme = toggleSwitch.checked ? "light" : "dark";
+        applyTheme(newTheme);
+        localStorage.setItem("theme", newTheme);
     });
 }
 
+function applyTheme(theme) {
+    const html = document.documentElement;
+
+    if (theme === "light") {
+        html.setAttribute("data-theme", "light");
+        document.body.classList.add("light-mode");
+        document.body.classList.remove("dark-mode");
+    } else {
+        html.setAttribute("data-theme", "dark");
+        document.body.classList.add("dark-mode");
+        document.body.classList.remove("light-mode");
+    }
+}
