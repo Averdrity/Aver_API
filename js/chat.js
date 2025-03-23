@@ -99,19 +99,60 @@ function renderChatHistory(groups) {
     const container = document.getElementById('chat-history');
     container.innerHTML = '';
 
-    const search = document.createElement('input');
-    search.type = 'text';
-    search.placeholder = 'Search chats...';
-    search.className = 'chat-search';
-    search.addEventListener('input', () => filterChatCards(search.value));
-    container.appendChild(search);
+    // 🧠 Toolbar wrapper
+    const toolbar = document.createElement('div');
+    toolbar.className = 'chat-toolbar';
 
-    const newBtn = document.createElement('button');
-    newBtn.className = 'new-chat-btn';
-    newBtn.textContent = '➕ New Chat';
-    newBtn.onclick = startNewChatSession;
-    container.appendChild(newBtn);
+    // 🔍 Search Icon Button with native browser tooltip
+    const searchIconBtn = document.createElement('button');
+    searchIconBtn.className = 'toolbar-icon search-icon-btn';
+    searchIconBtn.title = 'Search Chat History'; // Tooltip on button
 
+    const searchIcon = document.createElement('i');
+    searchIcon.className = 'icon-search';
+    searchIcon.innerText = '🔍';
+    searchIcon.title = 'Search Chat History'; // Tooltip on icon too
+    searchIconBtn.appendChild(searchIcon);
+    toolbar.appendChild(searchIconBtn);
+
+    // New Chat Button
+    const newChatIconBtn = document.createElement('button');
+    newChatIconBtn.className = 'toolbar-icon new-chat-icon-btn';
+    newChatIconBtn.title = 'Start New Chat';
+
+    const newChatIcon = document.createElement('i');
+    newChatIcon.className = 'icon-newchat';
+    newChatIcon.innerText = '✏️';
+    newChatIcon.title = 'Start New Chat';
+    newChatIconBtn.appendChild(newChatIcon);
+    newChatIconBtn.onclick = startNewChatSession;
+    toolbar.appendChild(newChatIconBtn);
+
+    // Append toolbar to container
+    container.appendChild(toolbar);
+
+    // 🔍 Search input wrapper (initially hidden)
+    const searchWrapper = document.createElement('div');
+    searchWrapper.className = 'search-input-wrapper hidden'; // Start hidden
+
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Search chats...';
+    searchInput.className = 'chat-search';
+    searchInput.addEventListener('input', () => filterChatCards(searchInput.value));
+
+    searchWrapper.appendChild(searchInput);
+    container.appendChild(searchWrapper);
+
+    // Toggle search bar visibility
+    searchIconBtn.addEventListener('click', () => {
+        searchWrapper.classList.toggle('hidden');
+        if (!searchWrapper.classList.contains('hidden')) {
+            searchInput.focus();
+        }
+    });
+
+    // 💬 Render chat groups and chat cards
     for (const group in groups) {
         const title = document.createElement('h4');
         title.textContent = group;
@@ -124,6 +165,7 @@ function renderChatHistory(groups) {
         });
     }
 }
+
 
 // ================= Render Chat Cards =================
 function renderChatCard(chat) {

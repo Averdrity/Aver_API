@@ -13,13 +13,14 @@ function createChatboxModal() {
     <div id="chatboxModal" class="chatbox-modal">
     <!-- Toolbar -->
     <div class="chat-toolbar">
-    <button data-action="bold"><b>B</b></button>
-    <button data-action="italic"><i>I</i></button>
-    <button data-action="code">{ }</button>
-    <button data-action="quote">❝</button>
-    <button data-action="ul">• List</button>
-    <button data-action="inline-code">\`</button>
+    <button data-action="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+    <button data-action="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+    <button data-action="code" title="Code Block"><span>{ }</span></button>
+    <button data-action="quote" title="Quote Line (>)">❝</button>
+    <button data-action="ul" title="Bullet List (- item)">• List</button>
+    <button data-action="inline-code" title="Inline Code (\`code\`)">\`</button>
     </div>
+
     <!-- Chat Input -->
     <textarea id="chatboxInput" placeholder="Type your message..." rows="1"></textarea>
 

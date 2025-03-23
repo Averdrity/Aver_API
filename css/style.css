@@ -1,5 +1,5 @@
 /* ===========================================
- * 🚀 Aver-Web | Final style.css (Part 1 of 5)
+ * 🚀 Aver-Web | Final Cleaned style.css (Part 1 of 5)
  * =========================================== */
 
 /* ===== Reset & Base Styling ===== */
@@ -18,30 +18,26 @@ html, body {
     height: 100%;
 }
 
-/* Standardize Heading Sizes and Margins */
+/* ===== Headings Standardization ===== */
 h1, h2, h3, h4, h5, h6 {
-    margin-block: 0.5em;
     font-weight: bold;
+    margin-block: 0.5em;
 }
-
 h1 {
     font-size: 2.2rem;
     margin-top: 0.75em;
     margin-bottom: 0.5em;
 }
-
 h2 {
     font-size: 1.6rem;
     margin-top: 0.6em;
     margin-bottom: 0.4em;
 }
-
 h3 {
     font-size: 1.3rem;
     margin-top: 0.6em;
     margin-bottom: 0.4em;
 }
-
 
 /* ===== Theme Variables ===== */
 :root {
@@ -72,438 +68,6 @@ h3 {
     --accent: #007acc;
 }
 
-/* ===== Scrollbars ===== */
-::-webkit-scrollbar {
-    width: 10px;
-}
-::-webkit-scrollbar-track {
-    background: var(--scroll-track);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--scroll-thumb);
-    border-radius: 10px;
-}
-
-/* ===== Base Elements ===== */
-a {
-    text-decoration: none;
-    color: inherit;
-}
-input, textarea, select {
-    background: var(--input-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    border-radius: var(--radius);
-    padding: 10px;
-    width: 100%;
-    font-size: 15px;
-}
-input:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-button {
-    background: var(--card-bg);
-    color: var(--text-color);
-    border: none;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    padding: 10px 16px;
-    font-weight: 500;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-button:hover {
-    background: var(--scroll-thumb);
-    transform: scale(1.05);
-}
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-.hidden {
-    display: none !important;
-}
-.text-muted {
-    color: var(--muted-text);
-}
-
-/* ===== Floating Header ===== */
-.floating-header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    background: var(--card-bg);
-    box-shadow: var(--shadow);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    z-index: 1000;
-    border-radius: 0 0 var(--radius) var(--radius);
-}
-.header-btn-group {
-    display: flex;
-    gap: 12px;
-}
-.header-btn {
-    padding: 10px 16px;
-    background: #2d2d2d;
-    color: var(--text-color);
-    border-radius: var(--radius);
-    transition: background 0.3s ease;
-}
-.header-btn:hover {
-    background: var(--scroll-thumb);
-}
-.header-btn.soon {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-.header-logo img {
-    height: 48px;
-    animation: logoPulse 3s ease-in-out infinite;
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--accent);
-}
-@keyframes logoPulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 8px var(--accent); }
-    50% { transform: scale(1.08); box-shadow: 0 0 16px var(--accent); }
-}
-
-/* ===== Footer ===== */
-.site-footer {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: var(--card-bg);
-    padding: 12px 20px;
-    color: var(--muted-text);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 900;
-    border-radius: var(--radius) var(--radius) 0 0;
-    box-shadow: var(--shadow);
-}
-.footer-content {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-}
-
-/* ===== Global Utility Layouts ===== */
-.centered {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 20px;
-    margin-top: 80px;
-    text-align: center;
-}
-
-/* ===========================================
- * 🚀 Aver-Web | Final style.css (Part 2 of 5)
- * =========================================== */
-
-/* ===== Modal Backdrop ===== */
-.modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-/* ====================== MODALS ====================== */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.modal-content {
-    background: var(--card-bg);
-    padding: 30px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    width: 90%;
-    max-width: 400px;
-    min-width: 320px;
-    animation: fadeInUp 0.4s ease;
-    position: relative;
-}
-
-/* Modal Title */
-.modal-content h2 {
-    color: var(--text-color);
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.4rem;
-}
-
-/* Modal Fields */
-.modal-content input,
-.modal-content textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 12px;
-    background: var(--input-bg);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    resize: vertical;
-    font-size: 15px;
-}
-
-/* Modal Buttons (Submit/Save) */
-.modal-content button:not(.modal-close-btn) {
-    width: 100%;
-    padding: 12px;
-    background: var(--accent);
-    color: #000;
-    font-weight: bold;
-    border-radius: var(--radius);
-    border: none;
-    transition: background 0.3s ease;
-}
-
-.modal-content button:not(.modal-close-btn):hover {
-    background: var(--scroll-thumb);
-    color: #fff;
-}
-
-/* Modal Close Button */
-button.modal-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    background: none;
-    border: none;
-    color: #ff4c4c;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 10;
-    transition: color 0.2s ease, transform 0.2s ease;
-}
-
-button.modal-close-btn:hover {
-    color: #ff2222;
-    transform: scale(1.1);
-}
-
-/* Modal Error Message */
-.modal-error {
-    font-size: 14px;
-    color: #ff6666;
-    text-align: center;
-    margin-top: 8px;
-}
-
-/* ===== Fade & Slide Animations ===== */
-.animated {
-    animation-duration: 1s;
-    animation-fill-mode: both;
-}
-.fadeInUp {
-    animation-name: fadeInUp;
-}
-.fadeInDown {
-    animation-name: fadeInDown;
-}
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: translateY(-20px); }
-    10%, 90% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-20px); }
-}
-
-/* ===== Remember Me Label ===== */
-.modal-content label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
-    color: var(--text-color);
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-/* ===== Divider Line (e.g. Profile Modal) ===== */
-.modal-content hr {
-    margin: 20px 0;
-    border: none;
-    border-top: 1px solid var(--border-color);
-}
-
-/* ===========================================
- * 🚀 Aver-Web | Final style.css (Part 3 of 5)
- * =========================================== */
-
-/* ====================== MAIN CHAT LAYOUT ====================== */
-#chat-container {
-display: flex;
-margin-top: 80px;
-height: calc(100vh - 140px);
-padding-bottom: 60px;
-overflow: hidden;
-}
-
-#chat-main {
-flex: 1;
-display: flex;
-flex-direction: column;
-padding: 16px;
-overflow-y: auto;
-}
-
-/* ====================== CHAT SIDEBARS ====================== */
-#chat-history,
-#memory-sidebar {
-width: 280px;
-background: var(--card-bg);
-box-shadow: var(--shadow);
-padding: 15px;
-overflow-y: auto;
-border-radius: var(--radius);
-margin: 8px;
-}
-
-.chat-search {
-    padding: 10px;
-    margin-bottom: 12px;
-    border-radius: var(--radius);
-    background: var(--input-bg);
-    border: none;
-    color: var(--text-color);
-    width: 100%;
-}
-
-/* Section Titles */
-.chat-history h4,
-.memory-sidebar h4 {
-    font-size: 15px;
-    color: var(--muted-text);
-    margin-bottom: 8px;
-    margin-top: 16px;
-}
-
-/* New Chat Button */
-.new-chat-btn {
-    background: var(--accent);
-    color: #000;
-    padding: 8px 14px;
-    border-radius: var(--radius);
-    font-weight: 600;
-    margin-bottom: 12px;
-    width: 100%;
-    transition: background 0.2s ease;
-}
-.new-chat-btn:hover {
-    background: #00c0e0;
-}
-
-/* ====================== CHAT HISTORY CARDS ====================== */
-.chat-card {
-    background: var(--input-bg);
-    padding: 10px 12px;
-    margin-bottom: 8px;
-    border-radius: var(--radius);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.2s ease;
-    cursor: pointer;
-}
-.chat-card:hover {
-    background: var(--scroll-thumb);
-}
-.chat-title {
-    color: var(--text-color);
-    font-size: 15px;
-    font-weight: 500;
-    flex-grow: 1;
-    padding-right: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* ====================== DROPDOWN MENUS ====================== */
-.chat-dropdown-wrapper {
-    position: relative;
-}
-.chat-dropdown-btn {
-    background: none;
-    border: none;
-    color: #ccc;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 0 4px;
-}
-.chat-dropdown-menu {
-    position: absolute;
-    top: 28px;
-    right: 0;
-    background: #1e1e1e;
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    z-index: 1000;
-    min-width: 120px;
-}
-.chat-dropdown-menu.hidden {
-    display: none;
-}
-.chat-dropdown-menu .dropdown-item {
-    padding: 10px 12px;
-    font-size: 14px;
-    color: #eee;
-    cursor: pointer;
-    border-bottom: 1px solid #333;
-    transition: background 0.2s ease;
-}
-.chat-dropdown-menu .dropdown-item:last-child {
-    border-bottom: none;
-}
-.chat-dropdown-menu .dropdown-item:hover {
-    background: #333;
-}
-
-/* ====================== THEME TOGGLE SWITCH ====================== */
 .theme-toggle {
     display: flex;
     align-items: center;
@@ -550,8 +114,464 @@ margin: 8px;
     transform: translateX(24px);
 }
 
+/* ===== Scrollbars ===== */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--scroll-track);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 10px;
+}
+
+/* ===== Elements Base ===== */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+input, textarea, select {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: var(--radius);
+    padding: 10px;
+    width: 100%;
+    font-size: 15px;
+}
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+button {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    padding: 10px 16px;
+    font-weight: 500;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+button:hover {
+    background: var(--scroll-thumb);
+    transform: scale(1.05);
+}
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.hidden {
+    display: none !important;
+}
+.text-muted {
+    color: var(--muted-text);
+}
+
+/* ===== Floating Header ===== */
+.floating-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    z-index: 100;
+    border-radius: 0 0 var(--radius) var(--radius);
+}
+.header-btn-group {
+    display: flex;
+    gap: 12px;
+}
+.header-btn {
+    padding: 10px 16px;
+    background: #2d2d2d;
+    color: var(--text-color);
+    border-radius: var(--radius);
+    transition: background 0.3s ease;
+}
+.header-btn:hover {
+    background: var(--scroll-thumb);
+}
+.header-btn.soon {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.header-logo img {
+    height: 48px;
+    animation: logoPulse 3s ease-in-out infinite;
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent);
+}
+@keyframes logoPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 8px var(--accent); }
+    50% { transform: scale(1.08); box-shadow: 0 0 16px var(--accent); }
+}
+
+/* ===== Footer ===== */
+.site-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    padding: 12px 20px;
+    color: var(--muted-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 900;
+    border-radius: var(--radius) var(--radius) 0 0;
+    box-shadow: var(--shadow);
+}
+.footer-content {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Utility Layouts ===== */
+.centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    margin-top: 80px;
+    text-align: center;
+}
+
 /* ===========================================
- * 🚀 Aver-Web | Final style.css (Part 4 of 5)
+ * 🚀 Aver-Web | Final Cleaned style.css (Part 2 of 5)
+ * =========================================== */
+
+/* ===== Unified Modal Styling ===== */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 90%;
+    max-width: 400px;
+    min-width: 320px;
+    animation: fadeInUp 0.4s ease;
+    position: relative;
+}
+
+.modal-content h2 {
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    resize: vertical;
+    font-size: 15px;
+}
+
+.modal-content button:not(.modal-close-btn) {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: #000;
+    font-weight: bold;
+    border-radius: var(--radius);
+    border: none;
+    transition: background 0.3s ease;
+}
+
+.modal-content button:not(.modal-close-btn):hover {
+    background: var(--scroll-thumb);
+    color: #fff;
+}
+
+/* ===== Modal Close Button (Global) ===== */
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #ff4c4c;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.modal-close-btn:hover {
+    color: #ff2222;
+    transform: scale(1.1);
+}
+
+/* ===== Modal Error Message ===== */
+.modal-error {
+    font-size: 14px;
+    color: #ff6666;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* ===== Remember Me Label ===== */
+.modal-content label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+/* ===== Divider Line ===== */
+.modal-content hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid var(--border-color);
+}
+
+/* ===== Fade Animations ===== */
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+.fadeInUp {
+    animation-name: fadeInUp;
+}
+.fadeInDown {
+    animation-name: fadeInDown;
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Chat Page Main Layout ===== */
+#chat-container {
+display: flex;
+margin-top: 80px;
+height: calc(100vh - 140px);
+padding-bottom: 60px;
+overflow: hidden;
+}
+
+#chat-main {
+flex: 1;
+display: flex;
+flex-direction: column;
+padding: 16px;
+overflow-y: auto;
+}
+
+/* ===========================================
+ * 🚀 Aver-Web | Final Cleaned style.css (Part 3 of 5)
+ * =========================================== */
+
+/* ===== Chat Sidebars ===== */
+#chat-history,
+#memory-sidebar {
+width: 280px;
+background: var(--card-bg);
+box-shadow: var(--shadow);
+padding: 15px;
+overflow-y: auto;
+overflow-x: visible;
+position: relative;
+border-radius: var(--radius);
+margin: 8px;
+z-index: auto;
+}
+
+/* ===== Sidebar Titles ===== */
+.chat-history h4,
+.memory-sidebar h4 {
+    font-size: 15px;
+    color: var(--muted-text);
+    margin-bottom: 8px;
+    margin-top: 16px;
+}
+
+/* ===== Chat Sidebar Search Dropdown (if used) ===== */
+.chat-search-dropdown {
+    width: 95%;
+    margin: 4px auto 10px auto;
+    display: block;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    padding: 8px 10px;
+    border-radius: var(--radius);
+    color: var(--text-color);
+    transition: all 0.2s ease;
+}
+.chat-search-dropdown.hidden {
+    display: none;
+}
+
+/* ====================== NEW CHAT BUTTON (Refined Style) ====================== */
+.new-chat-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #000;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin: 8px 0 14px 2px;
+    width: auto;
+    max-width: 90%;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+}
+.new-chat-btn:hover {
+    background: #00c0e0;
+    transform: scale(1.03);
+}
+
+/* ====================== CHAT TOOLBAR ICON BUTTONS ====================== */
+.chat-toolbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    margin-bottom: 10px;
+}
+
+.toolbar-icon {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted-text);
+    font-size: 18px;
+    padding: 6px;
+    border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.toolbar-icon:hover {
+    background: var(--input-bg);
+    color: var(--text-color);
+}
+
+/* OPTIONAL: Tooltip using native HTML 'title' */
+.toolbar-icon[title] {
+    pointer-events: all;
+}
+
+/* ====================== CHAT HISTORY CARDS ====================== */
+.chat-card {
+    background: var(--input-bg);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+.chat-card:hover {
+    background: var(--scroll-thumb);
+}
+
+.chat-title {
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 500;
+    flex-grow: 1;
+    padding-right: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ====================== CHAT CARD DROPDOWN MENU ====================== */
+.chat-dropdown-wrapper {
+    position: relative;
+}
+
+.chat-dropdown-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+.chat-dropdown-menu {
+    position: absolute;
+    top: 28px;
+    right: 0;
+    background: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    z-index: 1000;
+    min-width: 120px;
+}
+
+.chat-dropdown-menu.hidden {
+    display: none;
+}
+
+.chat-dropdown-menu .dropdown-item {
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #eee;
+    cursor: pointer;
+    border-bottom: 1px solid #333;
+    transition: background 0.2s ease;
+}
+
+.chat-dropdown-menu .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.chat-dropdown-menu .dropdown-item:hover {
+    background: #333;
+}
+
+/* ===========================================
+ * 🚀 Aver-Web | Final Cleaned style.css (Part 4 of 5)
  * =========================================== */
 
 /* ====================== CHAT MESSAGES ====================== */
@@ -573,16 +593,19 @@ margin: 8px;
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+
 .message-user {
     align-self: flex-end;
     background: #4a90e2;
-    color: white;
+    color: #fff;
 }
+
 .message-ai {
     align-self: flex-start;
     background: var(--card-bg);
     color: var(--text-color);
 }
+
 .message-bubble.thinking {
     background: linear-gradient(90deg, #333 30%, #444 60%, #333 90%);
     background-size: 200% 100%;
@@ -590,16 +613,18 @@ margin: 8px;
     opacity: 0.8;
     animation: pulseThinking 2s infinite linear;
 }
+
 @keyframes pulseThinking {
     0% { background-position: 0% 50%; }
     100% { background-position: 100% 50%; }
 }
 
-/* ====================== CHATBOX MODAL ====================== */
+/* ====================== CHATBOX CONTAINER ====================== */
 #chatboxContainer {
 width: 100%;
 padding: 8px 0;
 }
+
 .chatbox-modal {
     background: var(--card-bg);
     border-radius: var(--radius);
@@ -611,7 +636,7 @@ padding: 8px 0;
     animation: fadeInUp 0.4s ease;
 }
 
-/* Chat Input */
+/* Chat Input Field */
 #chatboxInput {
 width: 100%;
 padding: 10px;
@@ -630,13 +655,13 @@ transition: height 0.2s ease;
 }
 #chatboxInput:focus {
 outline: none;
-border: 1px solid var(--scrollbar-thumb);
+border: 1px solid var(--scroll-thumb);
 }
 #chatboxInput::-webkit-scrollbar {
 width: 6px;
 }
 #chatboxInput::-webkit-scrollbar-thumb {
-background: var(--scrollbar-thumb);
+background: var(--scroll-thumb);
 border-radius: 6px;
 }
 
@@ -648,7 +673,7 @@ margin-right: 12px;
 padding-top: 4px;
 }
 
-/* Send Button */
+/* Chatbox Send Button */
 #chatboxSendBtn {
 background: var(--card-bg);
 color: var(--text-color);
@@ -663,71 +688,33 @@ align-items: center;
 gap: 6px;
 cursor: pointer;
 }
+
 #chatboxSendBtn:hover {
-background: var(--scrollbar-thumb);
+background: var(--scroll-thumb);
 transform: scale(1.05);
 }
+
 #chatboxSendBtn:disabled {
 opacity: 0.5;
 cursor: not-allowed;
 }
+
 #chatboxSendBtn .send-loading {
 font-style: italic;
 animation: blink 1.2s infinite;
 }
+
 #chatboxSendBtn .hidden {
 display: none;
 }
+
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
 }
 
-/* ====================== CHATBOX TOOLBAR ====================== */
-.chat-toolbar {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 4px;
-}
-.chat-toolbar button {
-    background: #2b2b2b;
-    color: #fff;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    position: relative;
-}
-.chat-toolbar button:hover {
-    background: #444;
-}
-.chat-toolbar button::after {
-    content: attr(title);
-    position: absolute;
-    bottom: 130%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #111;
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-    z-index: 999;
-}
-.chat-toolbar button:hover::after {
-    opacity: 1;
-    bottom: 145%;
-}
-
 /* ===========================================
- * 🚀 Aver-Web | Final style.css (Part 5 of 5)
+ * 🚀 Aver-Web | Final Cleaned style.css (Part 5 of 5)
  * =========================================== */
 
 /* ======================= 📦 AI MARKDOWN STYLING ======================= */
@@ -761,13 +748,13 @@ display: none;
     color: #ccc;
 }
 .message-ai a {
-    color: #00d2ff;
+    color: var(--accent);
     text-decoration: underline;
 }
 .message-ai blockquote {
     background: #2a2a2a;
     padding: 10px 15px;
-    border-left: 4px solid #00d2ff;
+    border-left: 4px solid var(--accent);
     margin: 10px 0;
     border-radius: 8px;
     color: #ccc;
@@ -855,12 +842,12 @@ display: none;
 }
 .memory-card .memory-tag {
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: var(--muted-text);
     margin-bottom: 4px;
 }
 .memory-card .memory-date {
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: var(--muted-text);
     position: absolute;
     bottom: 8px;
     left: 10px;
@@ -884,13 +871,11 @@ display: none;
     #chat-main {
     width: 100%;
     }
-
     .floating-header,
     .site-footer {
         flex-direction: column;
         gap: 8px;
     }
-
     #landing-content {
     display: flex;
     flex-direction: column;
@@ -900,33 +885,30 @@ display: none;
     margin-top: 100px;
     text-align: center;
     }
-
-    .hero, .info-sliders {
+    .hero,
+    .info-sliders {
         width: 100%;
         max-width: 900px;
         margin-bottom: 40px;
     }
-
     .welcome-box {
         background: var(--card-bg);
         padding: 30px;
         border-radius: var(--radius);
         box-shadow: var(--shadow);
     }
-
     .welcome-box h1 {
         font-size: 2.5rem;
         margin-bottom: 10px;
         color: var(--text-color);
     }
-
     .welcome-box p {
         font-size: 1.1rem;
-        color: var(--text-muted);
+        color: var(--muted-text);
     }
 }
 
-/* ====================== LANDING PAGE LAYOUT FIX ====================== */
+/* ====================== LANDING PAGE LAYOUT ====================== */
 .centered-box {
     max-width: 800px;
     margin: 30px auto;
@@ -936,7 +918,6 @@ display: none;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
 }
-
 .info-section {
     display: flex;
     justify-content: center;
@@ -947,7 +928,6 @@ display: none;
     max-width: 1000px;
     padding: 0 20px;
 }
-
 .info-box {
     flex: 1 1 400px;
     padding: 24px;
@@ -956,39 +936,32 @@ display: none;
     box-shadow: var(--shadow);
     transition: transform 0.2s ease;
 }
-
 .info-box:hover {
     transform: translateY(-4px);
 }
-
 .info-box h3 {
     font-size: 1.4rem;
     color: var(--accent);
     margin-bottom: 12px;
 }
-
 .info-box p,
 .info-box li {
     color: var(--text-color);
     font-size: 0.98rem;
     line-height: 1.6em;
 }
-
 .slider-list {
     list-style: none;
     padding-left: 0;
 }
-
 .slider-list li {
     position: relative;
     padding-left: 24px;
     margin-bottom: 10px;
 }
-
 .slider-list li::before {
     content: "✔";
     position: absolute;
     left: 0;
     color: var(--accent);
 }
-
