@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>Aver-Web | Home</title>
@@ -12,62 +11,74 @@
 
 <body>
 
-  <!-- Dynamic Floating Header -->
+  <!-- 🌐 Dynamic Floating Header -->
   <div id="header"></div>
 
-  <!-- Dynamic Landing Content -->
-  <main id="landing-content"></main>
+  <!-- 🎯 Dynamic Landing Content -->
+  <main id="landing-content" class="centered animated fadeInUp"></main>
 
-  <!-- Dynamic Footer (with Theme Toggle) -->
+  <!-- 📥 Dynamic Footer -->
   <div id="footer"></div>
 
-  <!-- Dynamic Modals (Login, Register, Profile) -->
-<!-- Login Modal -->
-<div id="loginModal" class="modal hidden">
-  <div class="modal-content">
-    <h2>Login</h2>
-    <input type="text" id="loginUsername" placeholder="Username">
-    <input type="password" id="loginPassword" placeholder="Password">
-    <label><input type="checkbox" id="rememberMe"> Remember Me</label>
-    <button id="loginSubmit">Login</button>
-    <p id="loginError" class="modal-error"></p>
+  <!-- 💬 Login Modal -->
+  <div id="loginModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeAllModals()">×</button>
+      <h2>Login</h2>
+      <input type="text" id="loginUsername" placeholder="Username">
+      <input type="password" id="loginPassword" placeholder="Password">
+      <label><input type="checkbox" id="rememberMe"> Remember Me</label>
+      <button id="loginSubmit">Login</button>
+      <p id="loginError" class="modal-error"></p>
+    </div>
   </div>
-</div>
 
-<!-- Register Modal -->
-<div id="registerModal" class="modal hidden">
-  <div class="modal-content">
-    <h2>Register</h2>
-    <input type="text" id="registerUsername" placeholder="Username">
-    <input type="password" id="registerPassword" placeholder="Password">
-    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password">
-    <button id="registerSubmit">Register</button>
-    <p id="registerError" class="modal-error"></p>
+  <!-- 🆕 Register Modal -->
+  <div id="registerModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeAllModals()">×</button>
+      <h2>Register</h2>
+      <input type="text" id="registerUsername" placeholder="Username">
+      <input type="password" id="registerPassword" placeholder="Password">
+      <input type="password" id="registerConfirmPassword" placeholder="Confirm Password">
+      <button id="registerSubmit">Register</button>
+      <p id="registerError" class="modal-error"></p>
+    </div>
   </div>
-</div>
 
-<!-- Profile Modal -->
-<div id="profileModal" class="modal hidden">
-  <div class="modal-content">
-    <h2>Your Profile</h2>
-    <input type="text" id="profileName" placeholder="Full Name">
-    <input type="text" id="profileCountry" placeholder="Country">
-    <input type="url" id="profileWebsite" placeholder="Website URL">
-    <textarea id="profileBio" placeholder="Short Bio"></textarea>
-    <hr>
-    <input type="password" id="oldPassword" placeholder="Old Password">
-    <input type="password" id="newPassword" placeholder="New Password">
-    <input type="password" id="confirmNewPassword" placeholder="Confirm New Password">
-    <button id="profileSubmit">Save Changes</button>
-    <p id="profileMessage" class="modal-error"></p>
+  <!-- 👤 Profile Modal -->
+  <div id="profileModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="closeAllModals()">×</button>
+      <h2>Your Profile</h2>
+      <input type="text" id="profileName" placeholder="Full Name">
+      <input type="text" id="profileCountry" placeholder="Country">
+      <input type="url" id="profileWebsite" placeholder="Website URL">
+      <textarea id="profileBio" placeholder="Short Bio"></textarea>
+      <hr>
+      <input type="password" id="oldPassword" placeholder="Old Password">
+      <input type="password" id="newPassword" placeholder="New Password">
+      <input type="password" id="confirmNewPassword" placeholder="Confirm New Password">
+      <button id="profileSubmit">Save Changes</button>
+      <p id="profileMessage" class="modal-error"></p>
+    </div>
   </div>
-</div>
 
+  <!-- ✅ Ensure modals hidden on load -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+    });
 
-  <!-- JavaScript Modules -->
+    // Global modal close function
+    function closeAllModals() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+    }
+  </script>
+
+  <!-- 📦 JavaScript Modules -->
   <script type="module" src="/js/header.js"></script>
   <script type="module" src="/js/footer.js"></script>
   <script type="module" src="/js/landing.js"></script>
 </body>
-
 </html>
