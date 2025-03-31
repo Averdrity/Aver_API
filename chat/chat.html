@@ -27,40 +27,50 @@
 
   <!-- Main Chat UI -->
   <main id="chat-container">
-    <!-- Sidebar Toggle Buttons -->
-  <button id="toggleChatSidebar" class="sidebar-toggle left-toggle" title="Toggle Chat History">☰</button>
-  <button id="toggleMemorySidebar" class="sidebar-toggle right-toggle" title="Toggle Memory">☰</button>
 
+<!-- Sidebar Toggle Buttons -->
+<button id="toggleChatSidebar" class="sidebar-toggle-btn" title="Toggle Chat Sidebar">☰</button>
+<button id="toggleMemorySidebar" class="sidebar-toggle-btn" title="Toggle Memory Sidebar">☰</button>
 
-  <!-- 🆕 Floating System Message -->
-<div id="systemMessageToast" class="system-toast hidden">🆕 New chat session started.</div>
+<!-- Left Sidebar - Chat History -->
+<aside id="chat-history" class="chat-sidebar">
+  <!-- Toolbar for New Chat and Search -->
+  <div class="sidebar-toolbar">
+    <button id="floatingNewChatBtn" class="toolbar-icon new-chat-icon-btn" title="Start New Chat">✏️</button>
+    <button id="chatSearchDropdownBtn" class="toolbar-icon search-icon-btn" title="Search Chat Memory">🔍</button>
+  </div>
 
+  <!-- Search Dropdown -->
+  <div class="chat-search-dropdown hidden">
+    <input type="text" placeholder="Search..." id="chatSearchInput">
+  </div>
 
-
-    <!-- Left Sidebar - Chat History -->
-    <aside id="chat-history" class="chat-sidebar">
-      <!-- Injected via JS -->
-    </aside>
+  <!-- Chat history will be injected via JS -->
+</aside>
 
     <!-- Chat Area -->
     <section id="chat-main" class="chat-main">
       <div id="chatMessages" class="chat-messages"></div>
       <div id="chatboxContainer">
-        <!-- Injected via chatbox-modal.js -->
+        <!-- Chatbox modal content will be injected via chatbox-modal.js -->
       </div>
     </section>
 
     <!-- Right Sidebar - Memory Vault -->
     <aside id="memory-sidebar" class="memory-sidebar">
-      <!-- Injected via JS -->
+      <!-- Memory vault content will be injected via JS -->
     </aside>
 
   </main>
 
+  <!-- Floating System Message -->
+  <div id="systemMessageToast" class="system-toast hidden">🆕 New chat session started.</div>
+
   <!-- Footer -->
   <div id="footer"></div>
 
-  <!-- 💬 LOGIN MODAL -->
+  <!-- Modals -->
+  <!-- Login Modal -->
   <div id="loginModal" class="modal hidden">
     <div class="modal-content modal-box">
       <button class="modal-close-btn" onclick="closeAllModals()">×</button>
@@ -75,7 +85,7 @@
     </div>
   </div>
 
-  <!-- 🆕 REGISTER MODAL -->
+  <!-- Register Modal -->
   <div id="registerModal" class="modal hidden">
     <div class="modal-content modal-box">
       <button class="modal-close-btn" onclick="closeAllModals()">×</button>
@@ -88,7 +98,7 @@
     </div>
   </div>
 
-  <!-- 👤 PROFILE MODAL -->
+  <!-- Profile Modal -->
   <div id="profileModal" class="modal hidden">
     <div class="modal-content modal-box">
       <button class="modal-close-btn" onclick="closeAllModals()">×</button>
@@ -106,14 +116,12 @@
     </div>
   </div>
 
-    <!-- 📛 Modal JS Close Fallback -->
+  <!-- Modal Close Fallback -->
   <script>
-    // Ensure all modals are hidden on initial load
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
     });
 
-    // Global modal close function
     function closeAllModals() {
       document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
     }

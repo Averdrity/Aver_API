@@ -1,27 +1,64 @@
 // =======================================================
-// 🚀 chat.js | Final Version (Token Stream + Markdown + Live Sidebar)
+// 🚀 chat.js | Complete Upgraded Version
 // =======================================================
 
 let currentChatId = null;
 
+// Import necessary modules
 import { initChatboxModal } from './chatbox-modal.js';
 
+// =================== Initialization ===================
 document.addEventListener('DOMContentLoaded', () => {
+    initializeApp();
+});
+
+function initializeApp() {
     loadMemories();
     loadChatHistory();
     initChatboxModal(sendMessageToServer);
 
-    const newBtn = document.getElementById('newChatBtn');
-    if (newBtn) newBtn.addEventListener('click', startNewChatSession);
-});
+    setupEventListeners();
+}
+
+function setupEventListeners() {
+    const toggleChatSidebarBtn = document.getElementById('toggleChatSidebar');
+    const toggleMemorySidebarBtn = document.getElementById('toggleMemorySidebar');
+    const floatingNewChatBtn = document.getElementById('floatingNewChatBtn');
+    const chatSearchDropdownBtn = document.getElementById('chatSearchDropdownBtn');
+    const chatSearchDropdown = document.querySelector('.chat-search-dropdown');
+
+    // Toggle Left Sidebar
+    toggleChatSidebarBtn.addEventListener('click', () => {
+        document.getElementById('chat-history').classList.toggle('hidden');
+    });
+
+    // Toggle Right Sidebar
+    toggleMemorySidebarBtn.addEventListener('click', () => {
+        document.getElementById('memory-sidebar').classList.toggle('hidden');
+    });
+
+    // New Chat Button
+    floatingNewChatBtn.addEventListener('click', startNewChatSession);
+
+    // Toggle Search Dropdown
+    chatSearchDropdownBtn.addEventListener('click', () => {
+        chatSearchDropdown.classList.toggle('hidden');
+        if (!chatSearchDropdown.classList.contains('hidden')) {
+            document.getElementById('chatSearchInput').focus();
+        }
+    });
+}
 
 // =================== AJAX Load Memories ===================
 async function loadMemories() {
     try {
         const res = await fetch('/backend/ajax/ajax_memory_handler.php?action=getMemories');
         const data = await res.json();
-        if (data.success && data.memories) renderMemories(data.memories);
-        else console.warn('No memories or load issue:', data.message || 'Unknown error');
+        if (data.success && data.memories) {
+            renderMemories(data.memories);
+        } else {
+            console.warn('No memories or load issue:', data.message || 'Unknown error');
+        }
     } catch (error) {
         console.error('Memory fetch failed:', error);
     }
@@ -34,10 +71,10 @@ function renderMemories(memories) {
         const card = document.createElement('div');
         card.classList.add('memory-card');
         card.innerHTML = `
-        <div class="memory-title">${memory.title}</div>
-        <div class="memory-tag">${memory.tag}</div>
-        <div class="memory-date">${memory.created_at}</div>
-        <button class="memory-delete">Delete</button>
+            <div class="memory-title">${memory.title}</div>
+            <div class="memory-tag">${memory.tag}</div>
+            <div class="memory-date">${memory.created_at}</div>
+            <button class="memory-delete">Delete</button>
         `;
         card.querySelector('.memory-delete').onclick = () => deleteMemory(memory.id);
         sidebar.appendChild(card);
@@ -53,8 +90,11 @@ async function deleteMemory(id) {
             body: JSON.stringify({ memoryId: id })
         });
         const data = await res.json();
-        if (data.success) loadMemories();
-        else console.error('Memory deletion failed:', data.message);
+        if (data.success) {
+            loadMemories();
+        } else {
+            console.error('Memory deletion failed:', data.message);
+        }
     } catch (err) {
         console.error('Memory deletion error:', err);
     }
@@ -99,41 +139,30 @@ function renderChatHistory(groups) {
     const container = document.getElementById('chat-history');
     container.innerHTML = '';
 
-    // 🧠 Toolbar wrapper
+    // Toolbar
     const toolbar = document.createElement('div');
     toolbar.className = 'chat-toolbar';
 
-    // 🔍 Search Icon Button with native browser tooltip
+    // Search Button
     const searchIconBtn = document.createElement('button');
     searchIconBtn.className = 'toolbar-icon search-icon-btn';
-    searchIconBtn.title = 'Search Chat History'; // Tooltip on button
-
-    const searchIcon = document.createElement('i');
-    searchIcon.className = 'icon-search';
-    searchIcon.innerText = '🔍';
-    searchIcon.title = 'Search Chat History'; // Tooltip on icon too
-    searchIconBtn.appendChild(searchIcon);
+    searchIconBtn.title = 'Search Chat History';
+    searchIconBtn.innerHTML = '🔍';
     toolbar.appendChild(searchIconBtn);
 
     // New Chat Button
     const newChatIconBtn = document.createElement('button');
     newChatIconBtn.className = 'toolbar-icon new-chat-icon-btn';
     newChatIconBtn.title = 'Start New Chat';
-
-    const newChatIcon = document.createElement('i');
-    newChatIcon.className = 'icon-newchat';
-    newChatIcon.innerText = '✏️';
-    newChatIcon.title = 'Start New Chat';
-    newChatIconBtn.appendChild(newChatIcon);
+    newChatIconBtn.innerHTML = '✏️';
     newChatIconBtn.onclick = startNewChatSession;
     toolbar.appendChild(newChatIconBtn);
 
-    // Append toolbar to container
     container.appendChild(toolbar);
 
-    // 🔍 Search input wrapper (initially hidden)
+    // Search Input
     const searchWrapper = document.createElement('div');
-    searchWrapper.className = 'search-input-wrapper hidden'; // Start hidden
+    searchWrapper.className = 'search-input-wrapper hidden';
 
     const searchInput = document.createElement('input');
     searchInput.type = 'text';
@@ -144,7 +173,6 @@ function renderChatHistory(groups) {
     searchWrapper.appendChild(searchInput);
     container.appendChild(searchWrapper);
 
-    // Toggle search bar visibility
     searchIconBtn.addEventListener('click', () => {
         searchWrapper.classList.toggle('hidden');
         if (!searchWrapper.classList.contains('hidden')) {
@@ -152,7 +180,7 @@ function renderChatHistory(groups) {
         }
     });
 
-    // 💬 Render chat groups and chat cards
+    // Render Chat Groups
     for (const group in groups) {
         const title = document.createElement('h4');
         title.textContent = group;
@@ -166,8 +194,6 @@ function renderChatHistory(groups) {
     }
 }
 
-
-// ================= Render Chat Cards =================
 function renderChatCard(chat) {
     const card = document.createElement('div');
     card.className = 'chat-card';
@@ -186,9 +212,9 @@ function renderChatCard(chat) {
     const menu = document.createElement('div');
     menu.className = 'chat-dropdown-menu hidden';
     menu.innerHTML = `
-    <div class="dropdown-item" onclick="loadChat(${chat.id})">📂 Load Chat</div>
-    <div class="dropdown-item" onclick="renameChat(${chat.id})">✏️ Edit Title</div>
-    <div class="dropdown-item" onclick="deleteChat(${chat.id})">❌ Delete</div>
+        <div class="dropdown-item" onclick="loadChat(${chat.id})">📂 Load Chat</div>
+        <div class="dropdown-item" onclick="renameChat(${chat.id})">✏️ Edit Title</div>
+        <div class="dropdown-item" onclick="deleteChat(${chat.id})">❌ Delete</div>
     `;
 
     btn.onclick = e => {
@@ -201,11 +227,11 @@ function renderChatCard(chat) {
         if (!wrapper.contains(e.target)) menu.classList.add('hidden');
     });
 
-        wrapper.appendChild(btn);
-        wrapper.appendChild(menu);
-        card.appendChild(title);
-        card.appendChild(wrapper);
-        return card;
+    wrapper.appendChild(btn);
+    wrapper.appendChild(menu);
+    card.appendChild(title);
+    card.appendChild(wrapper);
+    return card;
 }
 
 // ================= Chat Actions =================
@@ -282,32 +308,6 @@ function showSystemMessageToast(message = "🆕 New chat session started.") {
         toast.classList.add('hidden');
     }, 3000); // Auto-hide after 3s
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const chatSidebar = document.getElementById('chat-history');
-    const memorySidebar = document.getElementById('memory-sidebar');
-
-    const toggleChatSidebarBtn = document.getElementById('toggleChatSidebar');
-    const toggleMemorySidebarBtn = document.getElementById('toggleMemorySidebar');
-    const floatingNewChatBtn = document.getElementById('floatingNewChatBtn');
-
-    // Toggle Left Sidebar
-    toggleChatSidebarBtn.addEventListener('click', () => {
-        chatSidebar.classList.toggle('hidden');
-    });
-
-    // Toggle Right Sidebar
-    toggleMemorySidebarBtn.addEventListener('click', () => {
-        memorySidebar.classList.toggle('hidden');
-    });
-
-    // New Chat Click
-    floatingNewChatBtn.addEventListener('click', () => {
-        startNewChatSession();
-    });
-});
-
-
 
 // ================= Message Handling =================
 async function sendMessageToServer(message) {
@@ -391,8 +391,6 @@ function displayMessageTokenByToken(sender, fullText) {
 
     typeNextChar();
 }
-
-
 
 // ================= Utilities =================
 function closeAllDropdowns() {
