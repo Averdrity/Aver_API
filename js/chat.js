@@ -269,13 +269,45 @@ function startNewChatSession() {
     });
 }
 
-function createNewChatPrompt() {
-    const box = document.createElement('div');
-    box.className = 'new-chat-popup';
-    box.textContent = '🆕 New chat session started';
-    document.body.appendChild(box);
-    setTimeout(() => box.remove(), 3000);
+function showSystemMessageToast(message = "🆕 New chat session started.") {
+    const toast = document.getElementById('systemMessageToast');
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hidden');
+    }, 3000); // Auto-hide after 3s
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const chatSidebar = document.getElementById('chat-history');
+    const memorySidebar = document.getElementById('memory-sidebar');
+
+    const toggleChatSidebarBtn = document.getElementById('toggleChatSidebar');
+    const toggleMemorySidebarBtn = document.getElementById('toggleMemorySidebar');
+    const floatingNewChatBtn = document.getElementById('floatingNewChatBtn');
+
+    // Toggle Left Sidebar
+    toggleChatSidebarBtn.addEventListener('click', () => {
+        chatSidebar.classList.toggle('hidden');
+    });
+
+    // Toggle Right Sidebar
+    toggleMemorySidebarBtn.addEventListener('click', () => {
+        memorySidebar.classList.toggle('hidden');
+    });
+
+    // New Chat Click
+    floatingNewChatBtn.addEventListener('click', () => {
+        startNewChatSession();
+    });
+});
+
+
 
 // ================= Message Handling =================
 async function sendMessageToServer(message) {

@@ -1,9 +1,3 @@
--- File: /database/schema.sql
--- AVER AI – Enhanced DB Schema (PDO-Ready)
-
--- Drop existing if exists (dev only)
-DROP TABLE IF EXISTS users, chats, chat_messages, memories, memory_tags, sql_logs, js_logs, error_log_entries, audit_logs;
-
 -- ------------------------------
 -- USERS TABLE
 -- ------------------------------
